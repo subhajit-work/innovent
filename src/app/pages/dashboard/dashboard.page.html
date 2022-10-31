@@ -1,0 +1,972 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-content>
+	<div class="main-page bg-animated">
+		<div class="page-underpart">
+			<div class="dashboard-page">
+				<mat-tab-group mat-align-tabs="start">
+					<!-- Test Dashboard -->
+					<mat-tab>
+						<ng-template mat-tab-label >
+						<div (click)="changeTab('test_dashboard.php')">
+							Test Dashboard
+						</div>
+						</ng-template>
+
+						<div *ngIf="!viewLoadData">
+							<div class="tab-inner" *ngIf="listing_view_url == 'test_dashboard.php'">
+								<p class="tab-tittle" [innerHTML]="get_user_dtls?.system_variable?.test_dashboard_title | safeHtml"></p>
+								<p [innerHTML]="get_user_dtls?.system_variable?.test_dashboard_short_description | safeHtml"></p>
+								<div class="purchase-product" *ngIf="pageData?.active_purchased_order == 0">
+									<p class="purchase-product-tittle" [innerHTML]="pageData?.title | safeHtml"></p>
+									<p *ngFor="let item of pageData?.exam">
+										<a [ngClass]="{'exam-visited': item.visited == 1}" href="#" [routerLink]="['/', 'exam-group', item?.type, item?.id]">{{item?.name}}</a>
+									</p>
+								</div>
+
+								
+								<div class="tree-structure" *ngIf="pageData?.active_purchased_order == 1">
+									<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+										<!-- This is the tree node template for leaf nodes -->
+										<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+										<li class="mat-tree-node">
+											<!-- use a disabled button to provide padding for tree leaf -->
+											<button mat-icon-button disabled></button>
+											<p class="linkTag">
+												<a [ngClass]="{'exam-visited': node.visited == 1}" href="#" [routerLink]="['/', 'exam-group', node?.type, node?.id]">{{node?.name}}</a>
+											</p>
+										</li>
+										</mat-tree-node>
+										<!-- This is the tree node template for expandable nodes -->
+										<mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+										<li class="childOption">
+											<div class="mat-tree-node">
+											<button mat-icon-button matTreeNodeToggle
+													[attr.aria-label]="'Toggle ' + node.name">
+												<mat-icon class="mat-icon-rtl-mirror">
+												{{treeControl.isExpanded(node) ? 'remove' : 'add'}}
+												</mat-icon>
+											</button>
+											<p>{{node.name}}</p>
+											</div>
+											<ul class="child-tree" [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+											<ng-container matTreeNodeOutlet></ng-container>
+											</ul>
+										</li>
+										</mat-nested-tree-node>
+									</mat-tree>
+								</div>
+								
+							</div>
+						</div>
+						<!-- Ion spinner -->
+						<div class="spin" *ngIf="viewLoadData">
+							<ion-spinner name="crescent"></ion-spinner>
+						</div>	
+					</mat-tab>
+					<!-- Report Dashboard -->
+					<mat-tab>
+						<ng-template mat-tab-label >
+						  <div (click)="changeTab('report_dashboard.php')">
+							Report Dashboard
+						  </div>
+						</ng-template>
+						<div *ngIf="!viewLoadData">
+							<div class="tab-inner" *ngIf="listing_view_url == 'report_dashboard.php'">
+								<p class="tab-tittle" [innerHTML]="get_user_dtls?.system_variable?.report_dashboard_title | safeHtml"></p>
+								<p [innerHTML]="get_user_dtls?.system_variable?.report_dashboard_short_description | safeHtml"></p>
+								<div class="purchase-product" *ngIf="pageData?.active_purchased_order == 0">
+									<p class="purchase-product-tittle" [innerHTML]="pageData?.title | safeHtml"></p>
+									<p class="linkTag" *ngFor="let item of pageData?.exam">
+										<a *ngIf="item?.is_overall_report == 0" [ngClass]="{'exam-visited': item.visited == 1}" href="#" [routerLink]="['/', 'report-list', item?.id]">{{item?.name}}</a>
+										<a *ngIf="item?.is_overall_report == 1" [ngClass]="{'exam-visited': item.visited == 1}" href="#" [routerLink]="['/', 'overall-report', item?.id, get_user_dtls.user_info.center_id]">{{item?.name}}</a>
+									</p>
+								</div>
+
+								<div class="tree-structure" *ngIf="pageData?.active_purchased_order == 1">
+									<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+										<!-- This is the tree node template for leaf nodes -->
+										<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+										<li class="mat-tree-node">
+											<!-- use a disabled button to provide padding for tree leaf -->
+											<button mat-icon-button disabled></button>
+											<p class="linkTag">
+												<a *ngIf="node?.is_overall_report == 0 && node?.is_click_enable == 1"  [ngClass]="{'exam-visited': node.visited == 1}" href="#" [routerLink]="['/', 'report-list', node?.id]">{{node?.name}}</a>
+												<a *ngIf="node?.is_overall_report == 1 && node?.is_click_enable == 1" [ngClass]="{'exam-visited': node.visited == 1}" href="#" [routerLink]="['/', 'overall-report', node?.id, get_user_dtls.user_info.center_id ]">{{node?.name}}</a>
+
+												<a *ngIf="node?.is_overall_report == 0 && node?.is_click_enable == 0"  [ngClass]="{'exam-visited': node.visited == 1}">{{node?.name}}</a>
+												<a *ngIf="node?.is_overall_report == 1 && node?.is_click_enable == 0" [ngClass]="{'exam-visited': node.visited == 1}">{{node?.name}}</a>
+											</p>
+										</li>
+										</mat-tree-node>
+										<!-- This is the tree node template for expandable nodes -->
+										<mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+										<li class="childOption">
+											<div class="mat-tree-node">
+											<button mat-icon-button matTreeNodeToggle
+													[attr.aria-label]="'Toggle ' + node.name">
+												<mat-icon class="mat-icon-rtl-mirror">
+												{{treeControl.isExpanded(node) ? 'remove' : 'add'}}
+												</mat-icon>
+											</button>
+											<p>{{node.name}}</p>
+											</div>
+											<ul class="child-tree" [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+											<ng-container matTreeNodeOutlet></ng-container>
+											</ul>
+										</li>
+										</mat-nested-tree-node>
+									</mat-tree>
+								</div>
+							</div>
+						</div>
+						<!-- Ion spinner -->
+						<div class="spin" *ngIf="viewLoadData">
+							<ion-spinner name="crescent"></ion-spinner>
+						</div>
+					</mat-tab>
+					<!-- My order -->
+					<mat-tab>
+						<ng-template mat-tab-label >
+						  <div (click)="changeTab('purchased_order.php')">
+							My Orders
+						  </div>
+						</ng-template>
+
+						<div *ngIf="!viewLoadData">
+							<div class="tab-inner" *ngIf="listing_view_url == 'purchased_order.php'">
+								<ion-icon class="ad-search" name="search" (click)="clickEvent()"></ion-icon>
+								<p class="tab-tittle" [innerHTML]="get_user_dtls?.system_variable?.order_history_title | safeHtml"></p>
+								<p [innerHTML]="get_user_dtls?.system_variable?.order_history_short_description | safeHtml"></p>
+								<div class="advance-search" [ngClass]="status ? 'success' : 'ion-hide'" >
+									<div class="section-inner">
+										<form #advanceSearchForm="ngForm" (ngSubmit)="onSubmitAdvanceForm(advanceSearchForm)" (keyup.enter)="onSubmitAdvanceForm(advanceSearchForm)">
+											<ion-grid>
+												<ion-row>
+		
+													<!-- Order Date From -->
+													<ion-col size-xs="12" size-sm="6" offset-sm="3">
+														<div class="form-item">
+															<ion-item>
+																<ion-label position="floating">Order Date From</ion-label>
+																<ion-datetime 
+																mode="ios"
+																display-format="MM/DD/YYYY"
+																[(ngModel)]="model.date_from"
+																(ngModelChange)="pickDate(model.date_from, 'date_from')"
+																[ngModelOptions]="{standalone: true}"
+																>
+																</ion-datetime>
+								
+																<!-- clear buttm -->
+																<ion-icon *ngIf="model.date_from" name="ios-close-circle-outline" class="custom-clear" (click)="clearItem('date_from', model.date_from)"></ion-icon>
+									
+																<!-- hidden  date time input -->
+																<input type="hidden" name="date_from" [(ngModel)]="model.date_from">
+															</ion-item>
+														</div>
+													</ion-col>
+		
+													<!-- Order Date To -->
+													<ion-col size-xs="12" size-sm="6" offset-sm="3">
+														<div class="form-item">
+															<ion-item>
+																<ion-label position="floating">Order Date To</ion-label>
+																<ion-datetime 
+																mode="ios"
+																display-format="MM/DD/YYYY"
+																[(ngModel)]="model.date_to"
+																(ngModelChange)="pickDate(model.date_to, 'date_to')"
+																[ngModelOptions]="{standalone: true}"
+																>
+																</ion-datetime>
+								
+																<!-- clear buttm -->
+																<ion-icon *ngIf="model.date_to" name="ios-close-circle-outline" class="custom-clear" (click)="clearItem('date_to', model.date_to)"></ion-icon>
+									
+																<!-- hidden  date time input -->
+																<input type="hidden" name="date_to" [(ngModel)]="model.date_to">
+															</ion-item>
+														</div>
+													</ion-col>
+		
+													<!-- Order Status -->
+													<ion-col size-xs="12" size-sm="6" offset-sm="3">
+														<div class="form-item">
+															<ion-item>
+																<ion-label style="margin-bottom: auto;">Order Status</ion-label>
+																<ion-select name="order_status" [(ngModel)]="model.order_status" (ionChange)="selectStatus(model.order_status ,'order_status')" okText="Okay" cancelText="Cancel" interface="action-sheet">
+																<ion-select-option value="active">Active</ion-select-option>
+																<ion-select-option value="inactive">Inactive</ion-select-option>
+																<ion-select-option value="expired">Expired</ion-select-option>
+																</ion-select>
+															</ion-item>
+														</div>
+													</ion-col>
+													
+												</ion-row>
+												<ion-row>
+													<ion-col size-xs="12" size-sm="6" offset-sm="3" style="padding: 0px;" class="ion-text-end">
+														<ion-button 
+														type="submit" 
+														[disabled]="!advanceSearchForm.valid">
+														<ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+														<span class="submitText">Filter Order</span>
+														</ion-button>
+
+														<ion-button 
+														color="danger" 
+														(click)="clearSearchData()"
+														[disabled]="!advanceSearchForm.valid">
+														<ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+														<span class="submitText">Clear</span>
+														</ion-button>
+													</ion-col>
+												</ion-row>
+											</ion-grid>
+										</form>
+									</div>
+								</div>
+								<div class="order-inner" *ngIf="!viewLoadData">
+									<mat-accordion>
+										<mat-expansion-panel (opened)="panelOpenState = true"
+															(closed)="panelOpenState = false" *ngFor="let orderitem of pageData; let j = index;">
+										<mat-expansion-panel-header>
+											<mat-panel-title>
+											#{{j + 1}}
+											</mat-panel-title>
+											<mat-panel-description>
+												<div class="order-desc">
+													<p><b>Order Date:</b> {{orderitem?.added_on}}</p>
+													<p><b>Purchased Order:</b> {{orderitem?.purchased_order_name}}</p>
+												</div>
+												
+												<span class="order-status"><b>{{orderitem?.status}}</b></span>
+											</mat-panel-description>
+										</mat-expansion-panel-header>
+										<div class="order-details">
+											<div class="order-short-details">
+												<div class="order-table section-inner">
+													<div class="order-table-row">
+														<div class="tittle"><b>Order Id:</b></div>
+														<div class="content"><p>{{orderitem?.order_id}}</p></div>
+													</div>
+													<div class="order-table-row">
+														<div class="tittle"><b>Order Date:</b></div>
+														<div class="content"><p>{{orderitem?.added_on}}</p></div>
+													</div>
+													<div class="order-table-row">
+														<div class="tittle"><b>Expiry Date:</b></div>
+														<div class="content"><p>{{orderitem?.expiry_date}}</p></div>
+													</div>
+													<div class="order-table-row">
+														<div class="tittle"><b>Payment Id:</b></div>
+														<div class="content"><p>{{orderitem?.payment_id}}</p></div>
+													</div>
+													<div class="order-table-row">
+														<div class="tittle"><b>Order Total:</b></div>
+														<div class="content"><p>{{orderitem?.order_total}}</p></div>
+													</div>
+												</div>
+
+												<div class="order-table section-inner">
+													<div class="order-table-row">
+														<div class="tittle"><b class="section-tittle">Component</b></div>
+														<div class="content"><p class="section-tittle">Type</p></div>
+													</div>
+													
+													<div class="order-table-row" *ngFor="let componentitem of orderitem.component_table; let k = index;">
+														<div class="tittle"><b>{{componentitem?.name}} {{orderitem?.currency_symbol}}{{componentitem?.amount}}</b></div>
+														<div class="content"><p>{{componentitem?.type}}</p></div>
+													</div>
+												</div>
+
+												<p>Exam Table</p>
+												<div class="order-table section-inner" *ngFor="let examitem of orderitem.exam_table; let l = index;">
+													<div class="order-table-row">
+														<div class="tittle"><b>Exam</b></div>
+														<div class="content"><p>{{examitem?.exam}}</p></div>
+													</div>
+													<div class="order-table-row">
+														<div class="tittle"><b>Class</b></div>
+														<div class="content"><p>{{examitem?.class}}</p></div>
+													</div>
+													<div class="order-table-row">
+														<div class="tittle"><b>Subject</b></div>
+														<div class="content"><p>{{examitem?.subject}}</p></div>
+													</div>
+													<div class="order-table-row">
+														<div class="tittle"><b>Type</b></div>
+														<div class="content"><p>{{examitem?.type}}</p></div>
+													</div>
+													<div class="order-table-row">
+														<div class="tittle"><b>Amount</b></div>
+														<div class="content"><p>{{orderitem?.currency_symbol}}{{examitem?.amount}}</p></div>
+													</div>
+												</div>
+											</div>
+											<p class="refund-link" *ngIf="orderitem?.show_refund == 1">Do you want to Refund? <span (click)="OpenModal('generate_refund_modal', orderitem.id, '');">Click Here</span></p>
+											<div class="order-short-details">
+												<div class="order-table section-inner" *ngIf="orderitem?.show_refund == 0 && orderitem?.refund_status !== null">
+													<p class="section-tittle">Refund Details</p>
+													<div class="order-table-row">
+														<div class="tittle"><b>Status:</b></div>
+														<div class="content"><p>{{orderitem?.refund_status}}</p></div>
+													</div>
+													<div class="order-table-row">
+														<div class="tittle"><b>Requested At:</b></div>
+														<div class="content"><p>{{orderitem?.refund_requested_at}}</p></div>
+													</div>
+												</div>
+											</div>
+											<div class="buttons">
+												<div>
+													<ion-button (click)="downloadPdf(orderitem.id)" >
+														<ion-icon name="download"></ion-icon>
+														PDF
+													</ion-button>
+												</div>
+												<div>
+													<ion-button color="danger" (click)="orderEmail(orderitem.id)" >
+														<ion-icon name="mail"></ion-icon>
+														Email
+													</ion-button>
+												</div>
+											</div>
+										</div>
+										</mat-expansion-panel>
+									</mat-accordion>
+								</div>
+								<!-- Ion spinner -->
+								<div class="spin" *ngIf="viewLoadData">
+									<ion-spinner name="crescent"></ion-spinner>
+								</div>
+							</div>
+						</div>
+						<!-- Ion spinner -->
+						<div class="spin" *ngIf="viewLoadData">
+							<ion-spinner name="crescent"></ion-spinner>
+						</div>
+					</mat-tab>
+					<!-- Profile -->
+					<mat-tab>
+						<ng-template mat-tab-label >
+						  <div (click)="changeTab('profile.php')">
+							Profile
+						  </div>
+						</ng-template>
+
+						<div *ngIf="!viewLoadData">
+							<div class="tab-inner" *ngIf="listing_view_url == 'profile.php'">
+								<p class="tab-tittle" [innerHTML]="get_user_dtls?.system_variable?.profile_title | safeHtml"></p>
+								<p [innerHTML]="get_user_dtls?.system_variable?.profile_short_description | safeHtml"></p>
+								<div class="order-inner">
+									<form #userAddForm="ngForm" (ngSubmit)="onSubmit(userAddForm)" (keyup.enter)="onSubmit(userAddForm)">
+										<ion-grid>
+											<ion-row style="margin-bottom:40px;">
+												<input type="hidden" name="student_id" [(ngModel)]="model.student_id">
+												<input type="hidden" name="center_id" [(ngModel)]="model.center_id">
+
+												<!-- First Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >First Name <sup>*</sup></ion-label>
+														<ion-input type="text" [(ngModel)]="model.student_name" name="student_name" #emailCtrl="ngModel" clearInput required>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+												<!-- Middle Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Middle Name</ion-label>
+														<ion-input type="text" [(ngModel)]="model.student_mname" name="student_mname" #emailCtrl="ngModel" clearInput>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+												<!-- Last Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Last Name <sup>*</sup></ion-label>
+														<ion-input type="text" [(ngModel)]="model.student_lname" name="student_lname" #emailCtrl="ngModel" clearInput required>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+
+												<!-- Aspirant For -->
+												<ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+													<ion-label> Aspirant For <sup>*</sup></ion-label>
+													<ng-select #categoryAddressSerch
+														[ngClass]="{'Only-view-fields': this.model.category_id}"
+														[loading]="userInfoLoading"
+														[dropdownPosition]="'bottom'"
+														placeholder="Please Select Category"
+														[items]="categoryList"
+														bindLabel="name"
+														bindValue="id"
+														[searchable]="false"
+														name="category_id" 
+														[(ngModel)]="model.category_id"
+														appendTo="body"
+														required
+														>
+														<ng-template ng-header-tmp>
+															<input placeholder="Search" class="dropdown-custom-search" type="text" (input)="categoryAddressSerch.filter($event.target.value)" [autofocus]="true" />
+														</ng-template>
+													</ng-select>
+												</ion-col>
+
+												<!-- Father First Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Father First Name </ion-label>
+														<ion-input type="text" [(ngModel)]="model.student_father" name="student_father" #emailCtrl="ngModel" clearInput>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+												<!-- Father Middle Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Father Middle Name</ion-label>
+														<ion-input type="text" [(ngModel)]="model.student_father_mname" name="student_father_mname" #emailCtrl="ngModel" clearInput>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+												<!-- Father Last Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Father Last Name</ion-label>
+														<ion-input type="text" [(ngModel)]="model.student_father_lname" name="student_father_lname" #emailCtrl="ngModel" clearInput>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+
+												<!-- Mother First Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Mother First Name</ion-label>
+														<ion-input type="text" [(ngModel)]="model.student_mother" name="student_mother" #emailCtrl="ngModel" clearInput>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+												<!-- Mother Middle Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Mother Middle Name</ion-label>
+														<ion-input type="text" [(ngModel)]="model.student_mother_mname" name="student_mother_mname" #emailCtrl="ngModel" clearInput>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+												<!-- Mother Last Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Mother Last Name</ion-label>
+														<ion-input type="text" [(ngModel)]="model.student_mother_lname" name="student_mother_lname" #emailCtrl="ngModel" clearInput>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+
+												<!-- Profile Picture -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="file_upload form-item">
+														<ion-label position="floating">Profile Picture</ion-label>
+														<div class="normal-file-uploading">
+															<span class="upload-file profile-upload">
+																Upload Picture
+																<input [(ngModel)]="model.studentlogo2" type="file" (change)="normalFileUpload($event, model.studentlogo2, 'studentlogo')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept="image/*">
+															</span>
+															<!-- accept=".pdf,.jpg,.doc,.docx" -->
+					
+															<!-- <span [hidden]="!uploadImagePathShow" class="file-name">{{model.image2}}</span> -->
+															<img [hidden]="!uploadImagePathShow " class="form-upload-image" src="{{imgaePreview}}" alt="image" />
+					
+															<img *ngIf="model.studentlogo && !uploadImagePathShow" class="form-upload-image" src="{{file_url}}/logo/studentlogo/{{model.studentlogo}}" alt="image" />
+					
+															<span class="image-clear img" (click)="fileCross(model.studentlogo2, 'studentlogo')" [hidden]="!model.studentlogo && !model.studentlogo2">
+																<ion-icon name="close"></ion-icon>
+															</span>
+														</div>
+													</div>
+												</ion-col>
+
+												<!-- D.O.B -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-item>
+															<ion-label position="floating">Date of Birth</ion-label>
+															<ion-datetime 
+															mode="ios"
+															display-format="DD-MM-YYYY"
+															[(ngModel)]="model.student_dob"
+															(ngModelChange)="pickDate(model.student_dob, 'startDate')"
+															[ngModelOptions]="{standalone: true}"
+															>
+															</ion-datetime>
+							
+															<!-- clear buttm -->
+															<ion-icon *ngIf="model.student_dob" name="ios-close-circle-outline" class="custom-clear" (click)="clearItem('student_dob', model.student_dob)"></ion-icon>
+								
+															<!-- hidden  date time input -->
+															<input type="hidden" name="student_dob" [(ngModel)]="model.student_dob">
+														</ion-item>
+													</div>
+												</ion-col>
+
+												<!-- Address 1 -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label>Address 1 <sup>*</sup></ion-label>
+														<ion-textarea name="student_address" [(ngModel)]="model.student_address" clearInput required></ion-textarea>
+														
+													</div>
+												</ion-col>
+
+												<!-- Address 2 -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label>Address 2 <sup>*</sup></ion-label>
+														<ion-textarea auto-grow="true" name="student_address_line2" [(ngModel)]="model.student_address_line2" clearInput required></ion-textarea>
+														
+													</div>
+												</ion-col>
+
+												<!-- State -->
+												<ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+													<ion-label> State <sup>*</sup></ion-label>
+													<ng-select #StateAddressSerch
+														[loading]="userInfoLoading"
+														[dropdownPosition]="'bottom'"
+														placeholder="Please Select State"
+														[items]="stateList"
+														bindLabel="name"
+														bindValue="name"
+														(change)="onChangeLocation(model.state, 'city', model)"
+														[searchable]="false"
+														name="state" 
+														[(ngModel)]="model.state"
+														appendTo="body"
+														required
+														>
+														<ng-template ng-header-tmp>
+															<input placeholder="Search" class="dropdown-custom-search" type="text" (input)="StateAddressSerch.filter($event.target.value)" [autofocus]="true" />
+														</ng-template>
+													</ng-select>
+												</ion-col>
+					
+												<!-- City -->
+												<ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+													<ion-label> City <sup>*</sup></ion-label>
+													<ng-select #cityAddressSerch
+														[loading]="selectLoadingDepend"
+														[dropdownPosition]="'bottom'"
+														placeholder="Please Select City"
+														[items]="cityList"
+														bindLabel="name"
+														bindValue="name"
+														[searchable]="false"
+														name="city" 
+														[(ngModel)]="model.city" 
+														appendTo="body"
+														required
+														>
+														<ng-template ng-header-tmp>
+															<input placeholder="Search" class="dropdown-custom-search" type="text" (input)="cityAddressSerch.filter($event.target.value)" [autofocus]="true" />
+														</ng-template>
+													</ng-select>
+												</ion-col>
+
+												<!-- Pincode -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Pincode <sup>*</sup></ion-label>
+														<ion-input type="tel" OnlyNumber="true" minlength="6" maxlength="6" [(ngModel)]="model.pin" name="pin" required #emailCtrl="ngModel" clearInput required>
+															<span class="login-icon"><ion-icon  name="phone-portrait"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+
+												<!-- Phone -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Phone Number <sup>*</sup></ion-label>
+														<ion-input type="tel" OnlyNumber="true" minlength="10" maxlength="10" [(ngModel)]="model.student_phone" name="student_phone" required #emailCtrl="ngModel" clearInput required>
+															<span class="login-icon"><ion-icon  name="phone-portrait"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+
+												<!-- Email -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Email <sup>*</sup></ion-label>
+														<ion-input type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" email [(ngModel)]="model.student_email" name="student_email" required #emailCtrl="ngModel" clearInput required>
+															<span class="login-icon"><ion-icon  name="mail"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+
+												<!-- User Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Username <sup>*</sup></ion-label>
+														<ion-input type="text" [(ngModel)]="model.username" name="username" #emailCtrl="ngModel" clearInput required>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+											</ion-row>
+											<ion-row>
+												<ion-col size-xs="12" size-sm="6" offset-sm="3" style="padding: 0px;">
+													<ion-button 
+													class="submit-btn"
+													type="submit" 
+													expand="block"
+													[disabled]="!userAddForm.valid">
+													<ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+													<span class="submitText">{{form_submit_text}}</span>
+													</ion-button>
+												</ion-col>
+											</ion-row>
+										</ion-grid>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- Ion spinner -->
+						<div class="spin" *ngIf="viewLoadData">
+							<ion-spinner name="crescent"></ion-spinner>
+						</div>
+					</mat-tab>
+					<!-- Change Password -->
+					<mat-tab>
+						<ng-template mat-tab-label >
+						  <div (click)="changeTab('changePassword.php')">
+							Change Password
+						  </div>
+						</ng-template>
+
+						<div *ngIf="!viewLoadData">
+							<div class="tab-inner" *ngIf="listing_view_url == 'changePassword.php'">
+								<p class="tab-tittle" [innerHTML]="get_user_dtls?.system_variable?.change_password_title | safeHtml"></p>
+								<p [innerHTML]="get_user_dtls?.system_variable?.change_password_short_description | safeHtml"></p>
+								<div class="order-inner">
+									<form #userAddForm="ngForm" (ngSubmit)="onSubmit(userAddForm)" (keyup.enter)="onSubmit(userAddForm)">
+										<ion-grid>
+											<ion-row style="margin-bottom:40px;">
+												<input type="hidden" name="student_id" [(ngModel)]="model.student_id">
+												<!-- <input type="hidden" name="center_id" [(ngModel)]="model.center_id"> -->
+
+												<!-- Current Password -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label>Current Password <sup>*</sup></ion-label>
+														<ion-input type="password" name="old_pass" [(ngModel)]="model.old_pass" clearInput required>
+														</ion-input>
+													</div>
+												</ion-col>
+
+												<!-- New Password -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label>New Password <sup>*</sup></ion-label>
+														<ion-input type="password" name="new_pass" [(ngModel)]="model.new_pass" clearInput required>
+														</ion-input>
+													</div>
+												</ion-col>
+
+												<!-- Confirm New Password -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label>Confirm New Password <sup>*</sup></ion-label>
+														<ion-input type="password" name="con_pass" [(ngModel)]="model.con_pass" clearInput required>
+														</ion-input>
+													</div>
+												</ion-col>
+												
+											</ion-row>
+											<ion-row>
+												<ion-col size-xs="12" size-sm="6" offset-sm="3" style="padding: 0px;">
+													<ion-button 
+													class="submit-btn"
+													type="submit" 
+													expand="block"
+													[disabled]="!userAddForm.valid">
+													<ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+													<span class="submitText">{{form_submit_text}}</span>
+													</ion-button>
+												</ion-col>
+											</ion-row>
+										</ion-grid>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- Ion spinner -->
+						<div class="spin" *ngIf="viewLoadData">
+							<ion-spinner name="crescent"></ion-spinner>
+						</div>
+					</mat-tab>
+					<!-- Notice & Announcement -->
+					<mat-tab>
+						<ng-template mat-tab-label >
+						  <div (click)="changeTab('notice.php')">
+							Notice & Announcement <span *ngIf="get_user_dtls?.unread_notice > 0" class="notification">{{get_user_dtls?.unread_notice}}</span>
+						  </div>
+						</ng-template>
+
+						<div *ngIf="!viewLoadData">
+							<div class="tab-inner" *ngIf="listing_view_url == 'notice.php'">
+								<ion-icon class="ad-search" name="search" (click)="clickEvent()"></ion-icon>
+								<p class="tab-tittle" [innerHTML]="get_user_dtls?.system_variable?.notice_and_announcement_title | safeHtml"></p>
+								<p [innerHTML]="get_user_dtls?.system_variable?.notice_and_announcement_short_description | safeHtml"></p>
+								<!-- Advance search start -->
+								<div class="advance-search" [ngClass]="status ? 'success' : 'ion-hide'" >
+									<div class="section-inner">
+										<form #advanceSearchForm="ngForm" (ngSubmit)="onSubmitAdvanceForm(advanceSearchForm)" (keyup.enter)="onSubmitAdvanceForm(advanceSearchForm)">
+											<ion-grid>
+												<ion-row>
+		
+													<!-- Notice Date From -->
+													<ion-col size-xs="12" size-sm="6" offset-sm="3">
+														<div class="form-item">
+															<ion-item>
+																<ion-label position="floating">Notice Date From</ion-label>
+																<ion-datetime 
+																mode="ios"
+																display-format="MM/DD/YYYY"
+																[(ngModel)]="model.date_from"
+																(ngModelChange)="pickDate(model.date_from, 'date_from')"
+																[ngModelOptions]="{standalone: true}"
+																>
+																</ion-datetime>
+								
+																<!-- clear buttm -->
+																<ion-icon *ngIf="model.date_from" name="ios-close-circle-outline" class="custom-clear" (click)="clearItem('date_from', model.date_from)"></ion-icon>
+									
+																<!-- hidden  date time input -->
+																<input type="hidden" name="date_from" [(ngModel)]="model.date_from">
+															</ion-item>
+														</div>
+													</ion-col>
+		
+													<!-- Notice Date To -->
+													<ion-col size-xs="12" size-sm="6" offset-sm="3">
+														<div class="form-item">
+															<ion-item>
+																<ion-label position="floating">Notice Date To</ion-label>
+																<ion-datetime 
+																mode="ios"
+																display-format="MM/DD/YYYY"
+																[(ngModel)]="model.date_to"
+																(ngModelChange)="pickDate(model.date_to, 'date_to')"
+																[ngModelOptions]="{standalone: true}"
+																>
+																</ion-datetime>
+								
+																<!-- clear buttm -->
+																<ion-icon *ngIf="model.date_to" name="ios-close-circle-outline" class="custom-clear" (click)="clearItem('date_to', model.date_to)"></ion-icon>
+									
+																<!-- hidden  date time input -->
+																<input type="hidden" name="date_to" [(ngModel)]="model.date_to">
+															</ion-item>
+														</div>
+													</ion-col>
+													
+												</ion-row>
+												<ion-row>
+													<ion-col size-xs="12" size-sm="6" offset-sm="3" style="padding: 0px;" class="ion-text-end">
+														<ion-button 
+														type="submit" 
+														[disabled]="!advanceSearchForm.valid">
+														<ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+														<span class="submitText">Filter Notice</span>
+														</ion-button>
+
+														<ion-button 
+														color="danger" 
+														(click)="clearSearchData()"
+														[disabled]="!advanceSearchForm.valid">
+														<ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+														<span class="submitText">Clear</span>
+														</ion-button>
+													</ion-col>
+												</ion-row>
+											</ion-grid>
+										</form>
+									</div>
+								</div>
+								<!-- Advance search end -->
+								<div class="order-inner" *ngIf="!viewLoadData">
+									<mat-accordion>
+										<mat-expansion-panel (opened)="panelOpenState = true"
+															(closed)="panelOpenState = false" *ngFor="let noticeitem of pageData; let j = index;">
+										<mat-expansion-panel-header>
+											<mat-panel-title>
+											#{{j + 1}}
+											</mat-panel-title>
+											<mat-panel-description>
+												<div class="order-desc">
+													<p><b>Notice Date:</b> {{noticeitem?.notice_date}}</p>
+													<p><b>Notice Subject:</b> {{noticeitem?.notice_subject}}</p>
+												</div>
+											</mat-panel-description>
+										</mat-expansion-panel-header>
+										<div class="order-details">
+											<div class="order-short-details">
+												<p [innerHTML]="noticeitem?.noitce | safeHtml"></p>
+											</div>
+											<div class="buttons">
+												<div>
+													<ion-button>
+														<ion-icon name="person"></ion-icon>
+														Post By Admin 
+													</ion-button>
+												</div>
+												<div>
+													<ion-button color="danger" (click)="deleteNotice(noticeitem.id)" >
+														<ion-icon name="trash"></ion-icon>
+														Delete
+													</ion-button>
+												</div>
+											</div>
+										</div>
+										</mat-expansion-panel>
+									</mat-accordion>
+								</div>
+								<!-- Ion spinner -->
+								<div class="spin" *ngIf="viewLoadData">
+									<ion-spinner name="crescent"></ion-spinner>
+								</div>
+							</div>
+						</div>
+						<!-- Ion spinner -->
+						<div class="spin" *ngIf="viewLoadData">
+							<ion-spinner name="crescent"></ion-spinner>
+						</div>	
+					</mat-tab>
+					<!-- Contact Us -->
+					<mat-tab>
+						<ng-template mat-tab-label >
+						  <div (click)="changeTab('contact.php')">
+							Contact Us
+						  </div>
+						</ng-template>
+
+						<div *ngIf="!viewLoadData">
+							<div class="tab-inner" *ngIf="listing_view_url == 'contact.php'">
+								<p class="tab-tittle" [innerHTML]="get_user_dtls?.system_variable?.contact_us_title | safeHtml"></p>
+								<p [innerHTML]="get_user_dtls?.system_variable?.contact_us_short_description | safeHtml"></p>
+								<div class="order-inner">
+									<form #userAddForm="ngForm" (ngSubmit)="onSubmit(userAddForm)" (keyup.enter)="onSubmit(userAddForm)">
+										<ion-grid>
+											<ion-row style="margin-bottom:40px;">
+												<input type="hidden" name="student_id" [(ngModel)]="model.student_id">
+												<!-- <input type="hidden" name="center_id" [(ngModel)]="model.center_id"> -->
+
+												<!-- Admin -->
+												<ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+													<ion-label> Admin <sup>*</sup></ion-label>
+													<ng-select #adminAddressSerch
+														[loading]="userInfoLoading"
+														[dropdownPosition]="'bottom'"
+														placeholder="Please Select Admin Emails"
+														[items]="adminList"
+														bindLabel="name"
+														bindValue="email"
+														[searchable]="false"
+														name="admin" 
+														[(ngModel)]="model.admin"
+														appendTo="body"
+														[multiple]="true"
+														required
+														>
+														<ng-template ng-header-tmp>
+															<input placeholder="Search" class="dropdown-custom-search" type="text" (input)="adminAddressSerch.filter($event.target.value)" [autofocus]="true" />
+														</ng-template>
+													</ng-select>
+												</ion-col>
+
+												<!-- Subject Name -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label >Subject Name <sup>*</sup></ion-label>
+														<ion-input type="text" [(ngModel)]="model.subject_name" name="subject_name" #emailCtrl="ngModel" clearInput required>
+															<span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+														</ion-input>
+													</div>
+												</ion-col>
+
+												<!-- Message -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="form-item">
+														<ion-label>Message <sup>*</sup></ion-label>
+														<ion-textarea name="message" [(ngModel)]="model.message" clearInput required></ion-textarea>
+													</div>
+												</ion-col>
+
+												<!-- Media -->
+												<ion-col size-xs="12" size-sm="6" offset-sm="3">
+													<div class="file_upload form-item">
+														<ion-label position="floating">Media</ion-label>
+														<div class="normal-file-uploading">
+															<span class="upload-file profile-upload">
+																Upload
+																<input [(ngModel)]="model.media_file2" type="file" (change)="normalFileUpload($event, model.media_file2, 'media_file')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" >
+															</span>
+															<!-- accept=".pdf,.jpg,.doc,.docx" -->
+					
+															<!-- <span [hidden]="!uploadImagePathShow" class="file-name">{{model.image2}}</span> -->
+															<!-- <img *ngIf="fileType == image/png || image/jpg" [hidden]="!uploadImagePathShow " class="form-upload-image" src="{{imgaePreview}}" alt="media_file" /> -->
+															<img [hidden]="!uploadImagePathShow" class="form-upload-image" src="assets/icon/folder.png" alt="media_file">
+															<img *ngIf="model.media_file && !uploadImagePathShow" class="form-upload-image" src="{{file_url}}/{{model.media_file}}" alt="media_file" />
+					
+															<span class="image-clear img" (click)="fileCross(model.media_file2, 'media_file')" [hidden]="!model.media_file && !model.media_file2">
+																<ion-icon name="close"></ion-icon>
+															</span>
+														</div>
+													</div>
+												</ion-col>
+												
+											</ion-row>
+											<ion-row>
+												<ion-col size-xs="12" size-sm="6" offset-sm="3" style="padding: 0px;">
+													<ion-button 
+													class="submit-btn"
+													type="submit" 
+													expand="block"
+													[disabled]="!userAddForm.valid">
+													<ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+													<span class="submitText">Send Mail</span>
+													</ion-button>
+												</ion-col>
+											</ion-row>
+										</ion-grid>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- Ion spinner -->
+						<div class="spin" *ngIf="viewLoadData">
+							<ion-spinner name="crescent"></ion-spinner>
+						</div>
+					</mat-tab>
+				</mat-tab-group>
+
+
+			</div>
+		</div>
+	</div>
+    
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

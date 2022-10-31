@@ -1,0 +1,98 @@
+.mat-tree-node {
+    .mat-icon-button {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+.product-details-page {
+    .pageTittle {
+        font-weight: bold;
+    }
+}
+  
+.example-tree ul,
+.example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+    background: #88888805;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+.tree-structure {
+    // .childOption {
+    //     .mat-tree-node {
+    //         .mat-icon-button {
+    //             position: absolute;
+    //             width: 100%;
+    //             text-align: left;
+    //         }
+    //         p {
+    //             margin-left: 25px;
+    //         }
+    //     }
+    // }
+    .child-tree {
+        // margin-left: 30px;
+        border: 1px solid #8888;
+        border-top: navajowhite;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        box-shadow: 0 10px 10px -5px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+    mat-nested-tree-node li.childOption {
+        background: #44444426;
+        margin-bottom: 50px;
+        padding-bottom: 10px;
+        ul {
+            mat-nested-tree-node li.childOption {
+                background: #fff;
+                margin-bottom: 0px;
+                padding-bottom: 0px;
+            }
+        }
+    }
+    .mat-tree-node {
+        p {
+            margin: 0;
+            color: var(--ion-color-logobg);
+            line-height: 1 !important;
+            font-weight: bold;
+        }
+        mat-checkbox {
+            color: var(--ion-color-logobg);
+        }
+    }
+}
+.mat-form-field + .mat-form-field {
+    margin-left: 8px;
+}
+.ad-search {
+    position: absolute;
+    right: 10px;
+    background: var(--ion-color-logobg);
+    color: #fff;
+    border-radius: 50%;
+    padding: 6px;
+}
+ion-select {
+    color: #000;
+}
+.advance-search .form-item {
+    margin-bottom: 0px;
+}
+.notification {
+    background: red;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    line-height: 20px;
+    color: #fff;
+    font-weight: bold;
+}
+.mat-tab-label {
+    opacity: 1 !important;
+}

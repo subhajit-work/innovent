@@ -1,0 +1,217 @@
+<!-- common header show -->
+<common-header *ngIf="get_user_dtls?.user_info"></common-header>
+
+<ion-content>
+    <div class="main-page bg-animated">
+        <div *ngIf="!viewLoadData">
+            <div class="page-underpart">                
+                <div class="home-page">
+                    <!-- banner section start -->
+                    <div class="banner">
+                        <ion-slides pager="true" [options]="slideOpts" #ionicSlider>
+                            <ion-slide *ngFor="let item of pageData?.main_banner"> 
+                                <img src="{{file_url}}/uploads/{{item?.media_file}}">
+                            </ion-slide>
+                        </ion-slides>
+                    </div>
+                    <!-- banner section end -->
+
+                    <!-- Our Features section start -->
+                    <div class="our-features">
+                        <div class="section-inner">
+                            <p class="section-tittle" [innerHTML]="pageData?.system_variable?.our_features_title | safeHtml"></p>
+                            <div class="our-feature-slider">
+                                <ion-slides pager="true" [options]="slideOpts" #ionicSlider>
+                                    <ion-slide *ngFor="let item of pageData?.our_features">
+                                        <div class="slider-item">
+                                            <div class="features-icon">
+                                                <i class="icons {{item?.sub_title}} text-color-primary"></i>
+                                            </div>
+                                            <p class="features-tittle">
+                                                {{item?.repeater_name}}
+                                            </p>
+                                            <p class="features-content">
+                                                {{item?.short_description}}
+                                            </p>
+                                        </div>
+                                    </ion-slide>
+                                </ion-slides>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Our Features section end -->
+
+                    <!-- study module section start -->
+                    <div *ngIf="get_user_dtls?.user_info" class="study-module">
+                        <div class="section-inner">
+                            <div class="study-module-slider">
+                                <ion-slides pager="true" [options]="slideOpts" #ionicSlider>
+                                    <ion-slide *ngFor="let item of pageData?.quotation">
+                                        <div class="slider-item">
+                                            <div class="module-image">
+                                                <img src="{{file_url}}/uploads/{{item?.media_file}}">
+                                            </div>
+                                            <div class="module-content">
+                                                <blockquote>
+                                                    <p>
+                                                        {{item?.title}}
+                                                    </p>
+                                                </blockquote>
+                                                <p *ngIf="item?.sub_title" class="module-author">
+                                                    - {{item?.sub_title}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </ion-slide>
+                                </ion-slides>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- study module section end -->
+
+                    <!-- Offer section start -->
+                    <div class="offer-module" *ngFor="let item of pageData?.offer">
+                        <div class="section-inner">
+                            <div class="offer_badge_outer">
+                                <span class="breaking-news-title ion-float-left">
+                                    <img style="width:100%;" src="assets/images/offer.jpg" alt="offer_badge1">
+                                </span>
+                                <div class="offer_text">
+                                    <marquee>
+                                        {{item?.title}}
+                                    </marquee>
+                                </div>
+                                <span class="breaking-news-title ion-float-right">
+                                    <img style="width:100%;" src="assets/images/offer.jpg" alt="offer_badge2">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Offer section end -->
+
+                    <!-- Test taker section start -->
+                    <div class="test-tracker">
+                        <div class="section-inner" *ngFor="let item of pageData?.test_feature; let i = index;" [ngClass]="{'ion-hide': i > 0}">
+                            <p class="section-tittle" [innerHTML]="item?.title | safeHtml"></p>
+                            <div class="test-tracker-inner">
+                                <div class="test-image">
+                                    <img src="{{file_url}}/uploads/{{item?.media_file}}">
+                                </div>
+                                <div class="test-body">
+                                    <p class="test-content" [innerHTML]="item?.description | safeHtml"></p>
+                                                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Test taker section end -->
+
+                    <!-- about test section start -->
+                    <div *ngIf="get_user_dtls?.user_info" class="about-test">
+                        <div class="section-inner">
+                            <p class="section-tittle" [innerHTML]="pageData?.system_variable?.test_benefit_title | safeHtml"></p>
+                            <div class="about-test-inner">
+                                <div class="test-inner-body">
+                                    <div class="test-inner-item" *ngFor="let item of pageData?.test_benefits; let i = index;">
+                                        <div class="test-icon">
+                                            <i class="{{item?.sub_title}}"></i>
+                                        </div>
+                                        <p class="test-title">
+                                            {{item?.repeater_name}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!-- about test section end -->
+
+                    <!-- multiple_test_benefits module section start -->
+                    <div *ngIf="get_user_dtls?.user_info" class="study-module">
+                        <div class="section-inner">
+                            <div class="study-module-slider">
+                                <ion-slides pager="true" [options]="slideOpts" #ionicSlider>
+                                    <ion-slide *ngFor="let item of pageData?.multiple_test_benefits; let i = index;">
+                                        <div class="slider-item">
+                                            <div class="module-image">
+                                                <img src="{{file_url}}/uploads/{{item?.media_file}}">
+                                            </div>
+                                            <div class="module-content">
+                                                <blockquote>
+                                                    <p>
+                                                        {{item?.title}}
+                                                    </p>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </ion-slide>
+                                </ion-slides>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- multiple_test_benefits module section end -->
+
+                    <!-- counter module section start -->
+                    <div *ngIf="get_user_dtls?.user_info" class="about-test counter">
+                        <div class="section-inner">
+                            <div class="about-test-inner">
+                                <div class="test-inner-body">
+                                    <div class="test-inner-item" *ngFor="let item of pageData?.counters; let i = index;">
+                                        <p [innerHTML]="item?.description | safeHtml"></p>
+                                        <p class="test-title">
+                                            {{item?.repeater_name}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!-- counter module section end -->
+
+                    <!-- testimonial section start -->
+                    <div *ngIf="get_user_dtls?.user_info" class="testimonial">
+                        <div class="section-inner">
+                            <p class="section-tittle" [innerHTML]="pageData?.system_variable?.testimonial_title | safeHtml"></p>
+                            <div class="testimonial-slider">
+                                <ion-slides pager="true" [options]="slideOpts" #ionicSlider>
+                                    <ion-slide *ngFor="let item of pageData?.testimonial; let i = index;">
+                                        <div class="slider-item">
+                                            <div class="testimonial">
+                                                <blockquote>
+                                                    <p class="mb-0"></p>
+                                                    <p [innerHTML]="item?.description | safeHtml"></p>
+                                                    <p></p>
+                                                </blockquote>
+                                                <div class="testimonial-arrow-down"></div>
+                                                <div class="testimonial-author">
+                                                    <div class="testimonial-author-thumbnail">
+                                                        <img src="{{file_url}}/uploads/{{item?.media_file}}" class="rounded-circle" alt="">
+                                                    </div>
+                                                    <p><strong>{{item?.title}}</strong><span>{{item?.sub_title}}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ion-slide>
+                                </ion-slides>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- testimonial section end -->
+                </div>  
+            </div>
+        </div>
+        <!-- Ion spinner -->
+        <div class="spin" *ngIf="viewLoadData">
+            <ion-spinner name="crescent"></ion-spinner>
+        </div>
+    </div>
+</ion-content>
+<ion-footer *ngIf="!get_user_dtls?.user_info">
+    <ion-button class="submit-btn" expand="block" [routerLink]="['/', 'auth']">
+        Next
+    </ion-button>
+</ion-footer>
+<!-- common footer show -->
+<common-footer *ngIf="get_user_dtls?.user_info"></common-footer>

@@ -1,0 +1,112 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-header class="page-sub-header">
+  <ion-toolbar class="sub-header-bg">
+    <ion-buttons slot="start">
+        <ion-back-button text="" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-label>Profile Details</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="main-page bg-animated">
+    <div *ngIf="!viewLoadData">
+      <div class="product-details-page">
+        <div class="page-underpart">
+          <div class="profile-details">
+            <div class="profile-box">
+                <ion-grid>
+                  <ion-row>
+                    <div class="profile_img">
+                      <div class="profile_img_underpart">
+                        <img *ngIf="pageData?.studentlogo" src="{{file_url}}/logo/studentlogo/{{pageData?.studentlogo}}" />
+                        <img *ngIf="!pageData?.studentlogo" src="assets/images/noimage.jpg" />
+                      </div>
+                      <p>{{pageData?.student_name}} {{pageData?.student_mname}} {{pageData?.student_lname}}</p>
+                    </div>
+                  </ion-row>
+                  <ion-row>
+                    <!-- Edit Button -->
+                    <ion-col size-xs="12">
+                      <ion-button class="ion-float-right profile-edit" size="small" shape="round" *ngIf="pageData?.student_id" [routerLink]="['/', 'profile-edit', pageData?.student_id]">Edit</ion-button>
+                    </ion-col>
+                    <!-- Username -->
+                    <ion-col size-xs="12" size-sm="6" *ngIf="pageData?.user_name">
+                      <div class="view-element">
+                        <i class="satellite material-icons">account_circle</i>
+                        <span class="text-name-bold">User ID :</span>
+                        <span><b>{{pageData?.user_name}}</b></span>
+                      </div>
+                    </ion-col>
+                    <!-- Date of Birth -->
+                    <ion-col size-xs="12" size-sm="6" *ngIf="pageData?.student_dob">
+                      <div class="view-element">
+                        <i class="date_range material-icons">date_range</i> 
+                        <span class="text-name-bold">Date of Birth :</span>
+                        <span><b>{{pageData?.student_dob}}</b></span>
+                      </div>
+                    </ion-col>
+                    <!-- Father Name -->
+                    <ion-col size-xs="12" size-sm="6" *ngIf="pageData?.student_father">
+                      <div class="view-element">
+                        <i class="wc material-icons">supervised_user_circle</i>
+                        <span class="text-name-bold">Father:</span>
+                        <span><b>{{pageData?.father_name}} {{pageData?.student_father_mname}} {{pageData?.student_father_lname}}</b></span>
+                      </div>
+                    </ion-col>
+                    <!-- Mother Name -->
+                    <ion-col size-xs="12" size-sm="6" *ngIf="pageData?.student_mother">
+                      <div class="view-element">
+                        <i class="near_me material-icons">supervised_user_circle</i>
+                        <span class="text-name-bold">Mother:</span>
+                        <span><b>{{pageData?.student_mother}} {{pageData?.student_mother_mname}} {{pageData?.student_mother_lname}}</b></span>
+                      </div>
+                    </ion-col>
+                    <!-- Mobile -->
+                    <ion-col size-xs="12" size-sm="6" *ngIf="pageData?.student_phone">
+                      <div class="view-element">
+                        <i class="smartphone material-icons">smartphone</i>
+                        <span class="text-name-bold">Mobile :</span>
+                        <span><b>{{pageData?.student_phone}}</b></span>
+                      </div>
+                    </ion-col>
+                    <!-- Email -->
+                    <ion-col size-xs="12" size-sm="6" *ngIf="pageData?.student_email">
+                      <div class="view-element">
+                        <i class="email material-icons">email</i> 
+                        <span class="text-name-bold">Email :</span>
+                        <span><b>{{pageData?.student_email}}</b></span>
+                      </div>
+                    </ion-col>
+                    <!-- Residental Address -->
+                    <ion-col size-xs="12" size-sm="6" *ngIf="pageData?.student_address">
+                      <div class="view-element">
+                        <i class="home material-icons">home</i> 
+                        <span class="text-name-bold">Address :</span>
+                        <span><b>{{pageData?.student_address}}, {{pageData?.student_address_line2}}, {{pageData?.state}}, {{pageData?.city}}, {{pageData?.pin}}</b></span>
+                      </div>
+                    </ion-col>
+
+                  </ion-row>
+                  
+                  
+                </ion-grid>
+            </div>
+
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ion spinner -->
+    <div class="spin" *ngIf="viewLoadData">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </div>
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

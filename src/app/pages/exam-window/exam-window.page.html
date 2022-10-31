@@ -1,0 +1,177 @@
+<ion-header class="app-header page-sub-header">
+  <ion-toolbar>
+      <ion-label>
+          <img alt="logo" src="{{file_url}}/logo/{{get_user_dtls?.siteinfo?.g_logo}}">
+      </ion-label>
+
+
+      <!-- loading -->
+      <ion-buttons slot="end" *ngIf="userInfoLoading">
+          <ion-button>
+              <ion-spinner name="crescent" style="width: 20px;"></ion-spinner>
+          </ion-button>
+      </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!viewLoadData">
+  <ion-header class="page-sub-header">
+    <ion-toolbar class="sub-header-bg">
+      <div class="exam-tittle-inner">
+        <div class="exam-tittle-underpart">
+          <div class="exam-tittle">
+            {{pageData?.exam_name}}
+          </div>
+          <div class="exam-time">
+            <div>{{pageData?.exam_duration-minit-1}} :{{60-sec}} </div>
+          </div>
+        </div>
+      </div>
+        
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="main-page bg-animated">
+		<div class="page-underpart">
+			<div class="exam-window">
+        <!-- Exam Question -->
+        <div class="question-subject" *ngIf="pageData?.subject">
+          <div class="subject-inner">
+            <div class="subject-item" *ngFor="let pageItem of pageData?.subject; let i = index;" (click)="changePaper(pageItem?.name, pageItem?.id)" [ngClass]="{ 'active': subId == pageItem.id}">
+              <span >
+                {{pageItem?.name}} ({{pageItem?.total_question}})
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="question-palette">  
+          <div class="question-palette-inner">
+            <div class="question-palette-item" *ngFor="let item of loopData; let i = index;" (click)="changeCurrentPage(i+1)" [ngClass]="answereObject[loopCount].classArray[i]">
+              {{i + 1}}
+            </div>
+          </div>
+        </div>
+
+        <div class="exam-question" *ngFor="let item of loopData; let i = index;">
+          <input type="hidden" value="{{answereObject[loopCount].display}}">
+          <div class="question-inner" *ngIf="answereObject[loopCount].currentPage==i+1">
+            <div class="question-header">
+              <div class="header-inner">
+                <ion-icon name="options"></ion-icon>
+                <p class="width-100"> Questions</p>
+                <p class="question-number">{{answereObject[loopCount].currentPage}}</p>
+              </div>
+            </div>
+            <div class="question-body">
+              <form #submitExamForm="ngForm" (ngSubmit)="onSubmit(submitExamForm)" (keyup.enter)="onSubmit(submitExamForm)">
+                <input type="hidden" [(ngModel)]="currentDate" name="starttime">
+
+                <div class="question-tittle">
+                  <div class="question-index">
+                    <ion-icon name="bookmark"></ion-icon>
+                  </div>
+                  <div class="question-index">
+                    <p [innerHTML]="item?.name | safeHtml"></p>
+                  </div>
+                </div>
+                <div class="question-option">
+                  <ul>
+                    <!-- Single question start -->
+                    <li *ngIf="item?.type == 'Single'">
+                      <div class="single-question" *ngFor="let item_option of item?.option; let j = index;">
+                        <input type="radio" id="option_{{item_option.value}}" name="radio_{{item.id}}" value="{{j}}" (change)="onItemChange($event,'radioButton',j)" [checked]="j==answereObject[loopCount].answeredArray[answereObject[loopCount].currentPage-1] && answereObject[loopCount].answeredArray[answereObject[loopCount].currentPage-1]!='' ">
+                          <label for="option_{{item_option.value}}">
+                            <div class="question-option-inner">
+                              <div class="question-value">
+                                {{item_option?.value}}.
+                              </div>
+                              <div class="question-name">
+                                <p [innerHTML]="item_option?.name | safeHtml"></p>
+                              </div>
+                            </div>
+                          </label>
+                      </div>
+                    </li>
+                    <!-- Single question end -->
+                    <!-- Multiple question start -->
+                    <li *ngIf="item?.type == 'Multiple'">
+                      <div class="multiple-question" *ngFor="let item_option of item?.option; let j = index;">
+                        <input type="checkbox" id="option_{{item_option.value}}" name="checkbox_{{item_option.value}}_{{item.id}}" value="{{j}}" (click)="onItemChange($event,'checkBox',j)" [checked]="checkString(answereObject[loopCount].answeredArray[answereObject[loopCount].currentPage-1],j)">
+                          <label for="option_{{item_option.value}}">
+                            <div class="question-option-inner">
+                              <div class="question-value">
+                                {{item_option?.value}}.
+                              </div>
+                              <div class="question-name">
+                                {{item_option?.name}}
+                              </div>
+                            </div>
+                          </label>
+                      </div>
+                    </li>
+                    <!-- Multiple question end -->
+
+                    <!-- Descriptive question start -->
+                    <li *ngIf="item?.type == 'Descriptive'">
+                      <div class="descriptive-question">
+                        <label>
+                          <div class="question-option-inner">
+                            <input type="text" placeholder="Type your answer" name="descriptive_{{item.id}}" (keyup)="onItemChange($event,'Descriptive',i)" value="{{[answereObject[loopCount].currentPage-1]}}">
+                          </div>
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="question-footer">
+                  <div class="question-footer-inner">
+                    <ion-button size="small" (click)="peviousPage()" [ngClass]="{ 'button-disabled': answereObject[loopCount].currentPage==1 && loopCount==0}">
+                      Previous
+                    </ion-button>
+                    <ion-button size="small" (click)="reviewAnswer()" [ngClass]="{ 'button-disabled': loopData.length==answereObject[loopCount].currentPage && pageData.subject.length==loopCount+1}">
+                      Mark for Review & Next
+                    </ion-button>
+                    <ion-button size="small" (click)="nextPage()" [ngClass]="{ 'button-disabled': loopData.length==answereObject[loopCount].currentPage && pageData.subject.length==loopCount+1}">
+                      Next
+                    </ion-button>
+                    <ion-button size="small" (click)="clearAnswer()">
+                      Clear Answer
+                    </ion-button>
+                    <ion-button size="small" (click)="finishExam()" type="submit">
+                      Finish
+                    </ion-button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+         
+        
+        
+
+        <div class="legend-states">
+          <div class="legend-states-inner">
+            <div class="legend-states-item" matRipple>
+              <div class="legend-number" style="background: var(--ion-color-success);"> {{answered}}</div>
+              <div class="legend-content">Answered</div>
+            </div>
+            <div class="legend-states-item" matRipple>
+              <div class="legend-number" style="background: var(--ion-color-red);">{{notAnswered}}</div>
+              <div class="legend-content">Not Answered</div>
+            </div>
+            <div class="legend-states-item" matRipple>
+              <div class="legend-number" style="color: #000;">{{notVisited}}</div>
+              <div class="legend-content">Not Visited</div>
+            </div>
+            <div class="legend-states-item" matRipple>
+              <div class="legend-number" style="background: var(--ion-color-warning);color: #000;"> {{forReview}}</div>
+              <div class="legend-content">For Review</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

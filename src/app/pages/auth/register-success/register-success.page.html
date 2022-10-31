@@ -1,0 +1,29 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-content>
+	<div class="main-page bg-animated">
+		<div *ngIf="!viewLoadData">
+			<div class="page-underpart">
+				
+					<h3>You Have Successfully Logged in to <strong>Innovintent</strong>.</h3>
+					<p>We have <strong>e-mailed your account password</strong> for future logins. Do check your Spam or Junk mail folder if it doesn't arrive in your inbox.</p>
+					
+					<div class="top-section">
+					<img src="{{file_url}}/uploads/{{viewData?.result_banner?.media_file}}">
+					<ion-button expand="block" shape="round" color="success" [routerLink]="['/dashboard']">
+						<ion-icon slot="start" name="person"></ion-icon>
+						Proceed to Dashboard
+					</ion-button>
+					</div>
+				
+			</div>
+		</div>
+		
+		<!-- Ion spinner -->
+        <div class="spin" *ngIf="viewLoadData">
+            <ion-spinner name="crescent"></ion-spinner>
+        </div>
+	</div>
+    
+</ion-content>

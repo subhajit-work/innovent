@@ -1,0 +1,58 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-header class="page-sub-header">
+  <ion-toolbar class="sub-header-bg">
+      <ion-buttons slot="start">
+          <ion-back-button text="" defaultHref="/"></ion-back-button>
+      </ion-buttons>
+      <ion-label>Report List</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="main-page bg-animated">
+    <div *ngIf="!viewLoadData">
+      <div class="page-underpart">
+        <div class="report-list-page">
+          <p class="page-tittle"><i class="fa fa-television" aria-hidden="true"></i>{{pageData?.exam_name}}</p>
+
+          <div class="report-lists">
+            <div class="prev-exam-section">
+              <ul>
+                <li *ngFor="let exam of pageData?.exam_report; let i = index;">
+                  <div class="section-inner" [routerLink]="['/', 'exam-report', parms_action_id, get_user_dtls.center_id , exam.date,'report']" [ngClass]="{ 'exam-visited': exam.visited == 1}">
+                    <div class="prev-exam-item">
+                      <div class="prev-exam-index">
+                        {{i + 1 }}.
+                      </div>
+                      <div class="prev-exam-content">
+                        <p>Date: {{exam?.date}}</p>
+                        <p>Score: {{exam?.score}}</p>
+                        <p>Total Question: {{exam?.total_question}}</p>
+                      </div>
+                      <div class="prev-exam-btn">
+                        <ion-button size="small">
+                          View Report
+                        </ion-button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ion spinner -->
+    <div class="spin" *ngIf="viewLoadData">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+	</div>
+    
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

@@ -1,0 +1,303 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-header class="page-sub-header">
+  <ion-toolbar class="sub-header-bg">
+    <ion-buttons slot="start">
+        <ion-back-button text="" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-label>Profile Edit</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="main-page bg-animated" *ngIf="!userInfoLoading">
+        <div *ngIf="!viewLoadData">
+            <div class="page-underpart">
+                <div class="profile-edit">
+                    <form #userAddForm="ngForm" (ngSubmit)="onSubmit(userAddForm)" (keyup.enter)="onSubmit(userAddForm)">
+                        <ion-grid>
+                            <ion-row style="margin-bottom:40px;">
+                                <input type="hidden" name="student_id" [(ngModel)]="model.student_id">
+                                <input type="hidden" name="center_id" [(ngModel)]="model.center_id">
+
+                                <!-- First Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >First Name <sup>*</sup></ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.student_name" name="student_name" #emailCtrl="ngModel" clearInput required>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                                <!-- Middle Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Middle Name</ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.student_mname" name="student_mname" #emailCtrl="ngModel" clearInput>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                                <!-- Last Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Last Name <sup>*</sup></ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.student_lname" name="student_lname" #emailCtrl="ngModel" clearInput required>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+
+                                <!-- Aspirant For -->
+                                <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                    <ion-label> Aspirant For <sup>*</sup></ion-label>
+                                    <ng-select #categoryAddressSerch
+                                        [ngClass]="{'Only-view-fields': this.model.category_id}"
+                                        [loading]="userInfoLoading"
+                                        [dropdownPosition]="'bottom'"
+                                        placeholder="Please Select Category"
+                                        [items]="categoryList"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        [searchable]="false"
+                                        name="category_id" 
+                                        [(ngModel)]="model.category_id"
+                                        appendTo="body"
+                                        required
+                                        >
+                                        <ng-template ng-header-tmp>
+                                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="categoryAddressSerch.filter($event.target.value)" [autofocus]="true" />
+                                        </ng-template>
+                                    </ng-select>
+                                </ion-col>
+
+                                <!-- Father First Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Father First Name </ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.student_father" name="student_father" #emailCtrl="ngModel" clearInput>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                                <!-- Father Middle Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Father Middle Name</ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.student_father_mname" name="student_father_mname" #emailCtrl="ngModel" clearInput>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                                <!-- Father Last Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Father Last Name</ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.student_father_lname" name="student_father_lname" #emailCtrl="ngModel" clearInput>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+
+                                <!-- Mother First Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Mother First Name</ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.student_mother" name="student_mother" #emailCtrl="ngModel" clearInput>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                                <!-- Mother Middle Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Mother Middle Name</ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.student_mother_mname" name="student_mother_mname" #emailCtrl="ngModel" clearInput>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                                <!-- Mother Last Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Mother Last Name</ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.student_mother_lname" name="student_mother_lname" #emailCtrl="ngModel" clearInput>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+
+                                <!-- Profile Picture -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="file_upload form-item">
+                                        <ion-label position="floating">Profile Picture</ion-label>
+                                        <div class="normal-file-uploading">
+                                            <span class="upload-file profile-upload">
+                                                Upload Picture
+                                                <input [(ngModel)]="model.studentlogo2" type="file" (change)="normalFileUpload($event, model.studentlogo2, 'studentlogo')" placeholder="Upload file" [ngModelOptions]="{standalone: true}" accept="image/*">
+                                            </span>
+                                            <!-- accept=".pdf,.jpg,.doc,.docx" -->
+
+                                            <!-- <span [hidden]="!uploadImagePathShow" class="file-name">{{model.image2}}</span> -->
+                                            <img [hidden]="!uploadstudentlogoPathShow " class="form-upload-image" src="{{imgaePreviewstudentlogo}}" alt="image" />
+
+                                            <img *ngIf="model.studentlogo && !uploadstudentlogoPathShow" class="form-upload-image" src="{{file_url}}/logo/studentlogo/{{model.studentlogo}}" alt="image" />
+
+                                            <span class="image-clear img" (click)="fileCross(model.studentlogo2, 'studentlogo')" [hidden]="!model.studentlogo && !model.studentlogo2">
+                                                <ion-icon name="close"></ion-icon>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </ion-col>
+
+                                <!-- D.O.B -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-item>
+                                            <ion-label position="floating">Date of Birth</ion-label>
+                                            <ion-datetime 
+                                            mode="ios"
+                                            display-format="DD-MM-YYYY"
+                                            [(ngModel)]="model.student_dob"
+                                            (ngModelChange)="pickDate(model.student_dob, 'startDate')"
+                                            [ngModelOptions]="{standalone: true}"
+                                            >
+                                            </ion-datetime>
+            
+                                            <!-- clear buttm -->
+                                            <ion-icon *ngIf="model.student_dob" name="ios-close-circle-outline" class="custom-clear" (click)="clearItem('student_dob', model.student_dob)"></ion-icon>
+                
+                                            <!-- hidden  date time input -->
+                                            <input type="hidden" name="student_dob" [(ngModel)]="model.student_dob">
+                                        </ion-item>
+                                    </div>
+                                </ion-col>
+
+                                <!-- Address 1 -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label>Address 1 <sup>*</sup></ion-label>
+                                        <ion-textarea name="student_address" [(ngModel)]="model.student_address" clearInput required></ion-textarea>
+                                        
+                                    </div>
+                                </ion-col>
+
+                                <!-- Address 2 -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label>Address 2 <sup>*</sup></ion-label>
+                                        <ion-textarea auto-grow="true" name="student_address_line2" [(ngModel)]="model.student_address_line2" clearInput required></ion-textarea>
+                                        
+                                    </div>
+                                </ion-col>
+
+                                <!-- State -->
+                                <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                    <ion-label> State <sup>*</sup></ion-label>
+                                    <ng-select #StateAddressSerch
+                                        [loading]="userInfoLoading"
+                                        [dropdownPosition]="'bottom'"
+                                        placeholder="Please Select State"
+                                        [items]="stateList"
+                                        bindLabel="name"
+                                        bindValue="name"
+                                        (change)="onChangeLocation(model.state, 'city', model)"
+                                        [searchable]="false"
+                                        name="state" 
+                                        [(ngModel)]="model.state"
+                                        appendTo="body"
+                                        required
+                                        >
+                                        <ng-template ng-header-tmp>
+                                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="StateAddressSerch.filter($event.target.value)" [autofocus]="true" />
+                                        </ng-template>
+                                    </ng-select>
+                                </ion-col>
+
+                                <!-- City -->
+                                <ion-col size-xs="12" size-sm="6" size-md="4"  size-lg="3">
+                                    <ion-label> City <sup>*</sup></ion-label>
+                                    <ng-select #cityAddressSerch
+                                        [loading]="selectLoadingDepend"
+                                        [dropdownPosition]="'bottom'"
+                                        placeholder="Please Select City"
+                                        [items]="cityList"
+                                        bindLabel="name"
+                                        bindValue="name"
+                                        [searchable]="false"
+                                        name="city" 
+                                        [(ngModel)]="model.city" 
+                                        appendTo="body"
+                                        required
+                                        >
+                                        <ng-template ng-header-tmp>
+                                            <input placeholder="Search" class="dropdown-custom-search" type="text" (input)="cityAddressSerch.filter($event.target.value)" [autofocus]="true" />
+                                        </ng-template>
+                                    </ng-select>
+                                </ion-col>
+
+                                <!-- Pincode -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Pincode <sup>*</sup></ion-label>
+                                        <ion-input type="tel" OnlyNumber="true" minlength="6" maxlength="6" [(ngModel)]="model.pin" name="pin" required #emailCtrl="ngModel" clearInput required>
+                                            <span class="login-icon"><ion-icon  name="phone-portrait"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+
+                                <!-- Phone -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Phone Number <sup>*</sup></ion-label>
+                                        <ion-input type="tel" OnlyNumber="true" minlength="10" maxlength="10" [(ngModel)]="model.student_phone" name="student_phone" required #emailCtrl="ngModel" clearInput required>
+                                            <span class="login-icon"><ion-icon  name="phone-portrait"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+
+                                <!-- Email -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Email <sup>*</sup></ion-label>
+                                        <ion-input type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" email [(ngModel)]="model.student_email" name="student_email" required #emailCtrl="ngModel" clearInput required>
+                                            <span class="login-icon"><ion-icon  name="mail"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+
+                                <!-- User Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Username <sup>*</sup></ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.username" name="username" #emailCtrl="ngModel" clearInput required>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3" style="padding: 0px;">
+                                    <ion-button 
+                                    class="submit-btn"
+                                    type="submit" 
+                                    expand="block"
+                                    [disabled]="!userAddForm.valid">
+                                    <ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+                                    <span class="submitText">{{form_submit_text}}</span>
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Ion spinner -->
+        <div class="spin" *ngIf="viewLoadData">
+            <ion-spinner name="crescent"></ion-spinner>
+        </div>
+    </div>
+</ion-content>
+<ion-footer class="body-footer"></ion-footer>

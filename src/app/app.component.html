@@ -1,0 +1,141 @@
+<ion-app>
+    <ion-split-pane contentId="main-content">
+        <ion-menu contentId="main-content" type="overlay">
+            <ion-header *ngIf="!userInfoLoading">
+                <!-- <div class="header-top">
+                    <div class="site-image">
+                        <img src="{{file_url}}/logo/{{userInfoDataall?.siteinfo?.g_logo}}">
+                    </div>
+                </div> -->
+                <ion-toolbar>
+                    <ion-item>
+                        <ion-thumbnail slot="start" class="userInfo">
+                            <img *ngIf="userInfoDataall?.user_info?.studentlogo" src="{{file_url}}/logo/studentlogo/{{userInfoDataall?.user_info?.studentlogo}}" />
+                            <img *ngIf="!userInfoDataall?.user_info?.studentlogo" src="assets/images/noimage.jpg" />
+                        </ion-thumbnail>
+                        <ion-label *ngIf="userInfoDataall?.user_info?.student_id" style="outline: none;">{{userInfoDataall?.user_info?.student_name}} {{userInfoDataall?.user_info?.student_lname}}</ion-label>
+                        <ion-label class="logoutBtn" matRipple (click)="logOutUser()">
+                            <span *ngIf="!logoutLoading">Logout</span>
+                            <ion-spinner name="crescent" style="width: 20px;" *ngIf="logoutLoading"></ion-spinner>
+                        </ion-label>
+                    </ion-item>
+                    <div (click)="closeModal()" class="profile-link" [routerLink]="['/', 'profile-details']">
+                        <p>User Profile</p>
+                    </div>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content class="menu-container">
+                <!-- <ion-list>
+                    <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+                        <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+                        <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                        <ion-label>
+                            {{p.title}}
+                        </ion-label>
+                        </ion-item>
+                    </ion-menu-toggle>
+                </ion-list> -->
+                <div class="text-center menu-container-inner">
+
+                    <!-- menu loading show-->
+                    <div class="menu-loading" *ngIf="userInfoLoading">
+                        <ion-progress-bar type="indeterminate" reversed="true"></ion-progress-bar>
+                        <div class="menu-loading-inner">
+                            <ion-spinner name="dots" color="light" style="zoom:2.0;"></ion-spinner>
+                        </div>
+                    </div>
+
+                    <!-------------------super admin Menu Content Starts ------------>
+                    <mat-accordion color="primary" class="mat-menu display-inline-block" *ngIf="!userInfoLoading">
+
+                        <mat-expansion-panel [ngClass]="{'off-submenu':!p.submenu}" class="margin-bottom-5" *ngFor="let p of menuPages; last as isLast; first as isFirst" [expanded]="p.isOpen" #example routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+
+                            <!-- hideToggle="true" #iconanchor -->
+                            <!-- no + - -->
+                            <mat-expansion-panel-header class="mat-header-bg" *ngIf="!p.submenu" [class.active-parent]="example.expanded" [routerLink]="p.module_url">
+                                <ion-menu-toggle auto-hide="false">
+                                    <mat-panel-title class="font-size-13 line-height-16">
+                                        <!-- <ion-icon class="margin-right-10 font-size-16" [name]="p.value.module_icon" slot="start"></ion-icon> -->
+                                        {{ p.module_display_name }}
+                                    </mat-panel-title>
+                                </ion-menu-toggle>
+                            </mat-expansion-panel-header>
+
+                            <!-- work + - -->
+                            <mat-expansion-panel-header class="mat-header-bg" *ngIf="p.submenu" [class.active-parent]="example.expanded">
+                                <mat-panel-title class="font-size-13 line-height-16">
+                                    <!-- <ion-icon class="margin-right-10 font-size-16" [name]="p.value.module_icon" slot="start"></ion-icon> -->
+                                    {{ p.module_display_name }}
+                                </mat-panel-title>
+                                <mat-icon *ngIf="!example.expanded">expand_more</mat-icon>
+                                <mat-icon *ngIf="example.expanded">expand_less</mat-icon>
+                            </mat-expansion-panel-header>
+
+                            <!-- sub menu -->
+                            <ion-list class="list-items bg-none" *ngIf="p.submenu">
+                                <ion-menu-toggle auto-hide="false">
+                                    <ion-item *ngFor="let sub of p.submenu" class="sub-item" [routerLink]="sub.module_url" routerLinkActive="router-link-active" routerDirection="root" [routerLinkActiveOptions]="{ exact: true }">
+                                        <!-- <ion-icon class="font-size-20" [name]="sub.value.page_icon" slot="start"></ion-icon> -->
+                                        
+                                        <ion-label class="font-size-12">
+                                            {{ sub.module_display_name }}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-menu-toggle>
+                            </ion-list>
+
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                    <!-------------------- super admin  Menu Content Ends -->
+
+                </div>
+
+            </ion-content>
+            <ion-footer style="background: var(--ion-color-logobg);border-top: 1px solid #ddd;">
+                <p class="poweredBy">© Copyright 2021. All Rights Reserved.</p>
+            </ion-footer>
+        </ion-menu>
+        <ion-router-outlet id="main-content">
+            <!-- <div class="footer-menu" *ngIf="userInfoDataall?.user_info">
+                <mat-tab-group  mat-align-tabs="center">
+                    <mat-tab>
+                      <ng-template mat-tab-label>
+                          <div class="mat-tab-item">
+                            <mat-icon class="example-tab-icon">home</mat-icon>
+                            <span>Home</span>
+                          </div>
+                      </ng-template>
+                    </mat-tab>
+                  
+                    <mat-tab>
+                      <ng-template mat-tab-label>
+                            <div class="mat-tab-item">
+                                <mat-icon class="example-tab-icon">category</mat-icon>
+                                <span>Category</span>
+                            </div>
+                      </ng-template>
+                    </mat-tab>
+                  
+                    <mat-tab>
+                      <ng-template mat-tab-label>
+                        <div class="mat-tab-item">
+                            <mat-icon class="example-tab-icon">import_contacts</mat-icon>
+                            <span>Subjects</span>
+                        </div>
+                      </ng-template>
+                    </mat-tab>
+
+                    <mat-tab>
+                        <ng-template mat-tab-label>
+                          <div class="mat-tab-item">
+                              <mat-icon class="example-tab-icon">settings</mat-icon>
+                              <span>Settings</span>
+                          </div>
+                        </ng-template>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>             -->
+        </ion-router-outlet>
+    </ion-split-pane>
+    
+</ion-app>

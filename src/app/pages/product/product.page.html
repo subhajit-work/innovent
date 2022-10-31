@@ -1,0 +1,58 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-content>
+    <div class="main-page bg-animated">
+      <div *ngIf="!viewLoadData">
+          <div class="page-underpart">
+              
+                  <!-- banner section start -->
+                  <div class="banner">
+                    <img src="{{file_url}}/uploads/{{pageData?.content?.media_file}}">
+                  </div>
+                  <!-- banner section end -->
+
+                  <!-- study module section start -->
+                  <div class="study-module" *ngFor="let item of pageData?.product">
+                      <div class="section-inner">
+                          <!-- <div class="study-module-slider">
+                              <ion-slides pager="true" [options]="slideOpts" #ionicSlider>
+                                  <ion-slide > -->
+                                      <div class="slider-item pricing-table ">
+                                        <div class="plan">
+                                          <div class="plan-header">
+                                              <h3>{{item?.product_name}}</h3>
+                                          </div>
+                                          <div class="plan-price">
+                                              <span class="price" [innerHTML]="item?.price | safeHtml"></span>
+                                              <!-- <label class="price-label">PER MONTH</label> -->
+                                          </div>
+                                          <div class="plan-features" [innerHTML]="item?.feature | safeHtml">
+                                            
+                                          </div>
+                                          <div class="plan-footer">
+                                              <ion-button [routerLink]="['/', 'product-details', item.id]">
+                                                Explore More
+                                              </ion-button>
+                                          </div>
+                                        </div>                                    
+                                      </div>
+                                  <!-- </ion-slide>
+                              </ion-slides>
+                          </div> -->
+                      </div>
+                  </div>
+                  <!-- study module section end -->
+
+          </div>
+      </div>
+      
+      <!-- Ion spinner -->
+      <div class="spin" *ngIf="viewLoadData">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div> 
+    </div>
+</ion-content>
+
+<!-- common footer show -->
+<common-footer *ngIf="get_user_dtls?.user_info"></common-footer>

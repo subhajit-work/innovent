@@ -1,0 +1,142 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-header class="page-sub-header">
+  <ion-toolbar class="sub-header-bg">
+    <ion-buttons slot="start">
+        <ion-back-button text="" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-label>Contact Us</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="main-page bg-animated">
+        <div *ngIf="!viewLoadData">
+            <div class="page-underpart">
+                <div class="profile-edit">
+                <form #userAddForm="ngForm" (ngSubmit)="onSubmit(userAddForm)" (keyup.enter)="onSubmit(userAddForm)">
+                    <div class="middle-section">
+                        <ion-grid>
+                            <ion-row style="margin-bottom:40px;">
+                                <!-- Full Name -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Full Name <sup>*</sup></ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.name" name="name" #emailCtrl="ngModel" clearInput required>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                                <!-- Email Address -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Email Address <sup>*</sup></ion-label>
+                                        <ion-input type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" email [(ngModel)]="model.email" name="email" required #emailCtrl="ngModel" clearInput required>
+                                            <span class="login-icon"><ion-icon  name="mail"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                                <!-- Subject-->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label >Subject <sup>*</sup></ion-label>
+                                        <ion-input type="text" [(ngModel)]="model.subject" name="subject" #emailCtrl="ngModel" clearInput required>
+                                            <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                        </ion-input>
+                                    </div>
+                                </ion-col>
+                                <!-- Message -->
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                    <div class="form-item">
+                                        <ion-label>Message <sup>*</sup></ion-label>
+                                        <ion-textarea name="message" [(ngModel)]="model.message" clearInput required></ion-textarea>
+                                        
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size-xs="12" size-sm="6" offset-sm="3" style="padding: 0px;">
+                                    <ion-button 
+                                    type="submit" 
+                                    expand="block"
+                                    shape="round"
+                                    [disabled]="!userAddForm.valid">
+                                    <ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner> 
+                                    <span class="submitText">{{form_submit_text}}</span>
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </form>
+                </div>
+
+                <!-- Contact us details -->
+                <div class="contact-details">
+                    <div class="details-item"> 
+                        <p class="details-header">
+                            Our 
+                            <strong>Office</strong>
+                        </p>
+                        <div class="details-box">
+                            <div class="box-item">
+                                <div class="icon">
+                                    <ion-icon name="navigate"></ion-icon>
+                                </div>
+                                <div class="title">
+                                    <strong>Address:</strong> {{pageData?.query_general_setting?.g_address}}, {{pageData?.query_general_setting?.g_city}} - {{pageData?.query_general_setting?.g_pin}}, {{pageData?.query_general_setting?.g_state}}
+                                </div>
+                            </div>
+                            <div class="box-item">
+                                <div class="icon">
+                                    <ion-icon name="call"></ion-icon>
+                                </div>
+                                <div class="title">
+                                    <strong>Phone:</strong> {{pageData?.query_general_setting?.g_phone}}
+                                </div>
+                            </div>
+                            <div class="box-item">
+                                <div class="icon">
+                                    <ion-icon name="mail"></ion-icon>
+                                </div>
+                                <div class="title">
+                                    <strong>Email:</strong> {{pageData?.query_general_setting?.g_email}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="contact-details">
+                    <div class="details-item"> 
+                        <p class="details-header">
+                            Business 
+                            <strong>Hours</strong>
+                        </p>
+                        <div class="details-box">
+                            <div class="box-item"  *ngFor="let item of pageData?.business_hours; let i = index;">
+                                <div class="icon">
+                                    <ion-icon name="time"></ion-icon>
+                                </div>
+                                <div class="title" innerHTML="{{item?.description}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Ion spinner -->
+        <div class="spin" *ngIf="viewLoadData">
+            <ion-spinner name="crescent"></ion-spinner>
+        </div>
+    </div>
+    
+    
+</ion-content>
+<!-- common footer show -->
+<common-footer></common-footer>

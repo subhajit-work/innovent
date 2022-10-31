@@ -1,0 +1,140 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-header class="page-sub-header">
+	<ion-toolbar class="sub-header-bg">
+		<ion-buttons slot="start">
+			<ion-back-button text="" defaultHref="/"></ion-back-button>
+		</ion-buttons>
+		<ion-label>Product details</ion-label>
+		<!-- <ion-label *ngIf="viewLoadData">
+			<ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+		</ion-label> -->
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="main-page bg-animated">
+		<div *ngIf="!viewLoadData">
+			<div class="product-details-page">
+				<div class="page-underpart">
+					
+						<p class="pageTittle">{{viewData?.product?.product_name}}</p>
+						<div [innerHTML]="viewData?.product?.description | safeHtml"></div>
+						<p>
+							For more information about this product visit this link
+							<a target="blank" href="https://www.innovintent.com/product/{{viewData?.product?.seo}}"> link.</a>
+						</p>
+
+						<div class="section-inner report-rating">
+							<p class="section-tittle">Customer Reviews</p>
+							<!-- rating component call here -->
+							<!-- item.intRating always need to number type not string -->
+							<app-rating [rating]='ratingNumber' [itemId]='parms_action_id' (ratingClick)="ratingComponentClick($event, 'rating_submit.php')"></app-rating>
+							<b>{{viewData?.product_rating?.avg_rating }} out of 5</b>
+							<span>{{viewData?.product_rating?.count_star_rating }} customer ratings</span>
+						</div>
+						<div class="tree-structure">
+							<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+								<!-- This is the tree node template for leaf nodes -->
+								<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+								<li class="mat-tree-node">
+									<!-- use a disabled button to provide padding for tree leaf -->
+									<button mat-icon-button disabled></button>
+									<!-- <p>
+										<a [ngClass]="{'exam-visited': node.visited == 1}" href="#" [routerLink]="['/', 'exam-group', node?.type, node?.id]">{{node?.name}}</a>
+									</p> -->
+
+									<mat-checkbox color="primary" (change)="onCheckboxChange($event,node)">{{node?.name}}</mat-checkbox>
+									
+								</li>
+								</mat-tree-node>
+								<!-- This is the tree node template for expandable nodes -->
+								<mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+								<li class="childOption">
+									<div class="mat-tree-node">
+									<button mat-icon-button matTreeNodeToggle
+											[attr.aria-label]="'Toggle ' + node.name" >
+										<mat-icon class="mat-icon-rtl-mirror">
+										{{treeControl.isExpanded(node) ? 'remove' : 'add'}}
+										</mat-icon>
+									</button>
+									<p>{{node.name}}</p>
+									</div>
+									<ul class="child-tree" [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+									<ng-container matTreeNodeOutlet></ng-container>
+									</ul>
+								</li>
+								</mat-nested-tree-node>
+							</mat-tree>
+						</div>	
+
+						<div class="selectedProducts" *ngIf="selectedItems?.length > 0">
+							<div class="promocode-box">
+								<p>You have to pay Rs: {{totalAmount}}</p>
+								<p>Do you have a Promo Code?</p>
+								<div class="input-promocode">
+									<form #promoCodeForm="ngForm" (ngSubmit)="submitPromocodeForm(promoCodeForm)" (keyup.enter)="submitPromocodeForm(promoCodeForm)">
+										<input name="promocode" [(ngModel)]="promocode" type="text" required>
+										<button [disabled]="!promoCodeForm.valid || promoLoading" type="submit">Submit</button>
+									</form>
+								</div>
+							</div>
+							<table>
+								<thead>
+									<tr>
+										<th>Component</th>
+										<th>Amount (Rs.)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let item of selectedItems; let i = index;">
+										<td>{{item?.product_name}}</td>
+										<td>{{item?.price}}</td>
+									</tr>
+									<tr *ngIf='promocodeAmount'>
+										<td>Promo Code Cost</td>
+										<td>{{promocodeAmount}}</td>
+									</tr>
+									<tr>
+										<td>Test Activation Cost</td>
+										<td>{{viewData?.test_activation_amount}}</td>
+									</tr>
+									<tr>
+										<td>GST</td>
+										<td>{{gstAmount}}</td>
+									</tr>
+									<tr>
+										<td>Round Off</td>
+										<td>{{roundOffAmount}}</td>
+									</tr>
+									<tr>
+										<td>Total</td>
+										<td>{{totalAmount}}</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<ion-button style="margin-bottom: 50px;"
+							class="submit-btn"
+							(click)="paymentProduct()"
+							expand="block">
+							<!-- <ion-spinner name="crescent" *ngIf="form_submit_text == 'Submitting'"></ion-spinner>  -->
+							<span class="submitText">Buy Now</span>
+							</ion-button>
+						</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Ion spinner -->
+		<div class="spin" *ngIf="viewLoadData">
+			<ion-spinner name="crescent"></ion-spinner>
+		</div>
+	</div>
+    
+</ion-content>
+
+
+<!-- common footer show -->
+<common-footer></common-footer>

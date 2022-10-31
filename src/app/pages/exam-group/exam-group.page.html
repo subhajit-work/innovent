@@ -1,0 +1,61 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-content>
+	<div class="main-page bg-animated">
+		<div class="page-underpart">
+			<div class="exam-group-page">
+        <p class="page-tittle"><i class="fa fa-television" aria-hidden="true"></i>{{pageData?.name}}</p>
+        <p *ngIf="pageData?.content" class="sub-page-tittle">{{pageData?.title}}:</p>
+        <p *ngIf="pageData?.content" class="tab-tittle" [innerHTML]="pageData?.content | safeHtml"></p>
+
+        <div class="legend-section">
+          <div class="section-inner">
+            <p class="legend-tittle">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{pageData?.legend_title}}
+            </p>
+            <ul>
+              <li *ngFor="let item of pageData?.legends">
+                <div class="legend-item  {{item}}">
+                  <p>{{item}}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="prev-exam-section">
+          <ul>
+            <li *ngFor="let exam of pageData?.exam; let i = index;">
+              <div class="section-inner" [routerLink]="['/', 'exam-window', exam.id]" [ngClass]="{ 'exam-visited': exam.visited == 1}">
+                <div class="prev-exam-item">
+                  <div class="prev-exam-index">
+                    {{i + 1 }}.
+                  </div>
+                  <div class="prev-exam-content">
+                    {{exam?.name}}
+                  </div>
+                  <div class="prev-exam-btn">
+                    <ion-button size="small">
+                      Start Exam
+                    </ion-button>
+                  </div>
+                </div>
+              </div>
+              
+            </li>
+          </ul>
+        </div>
+
+        <ion-button *ngIf="pageData?.exam_id" expand="block" [routerLink]="['/', 'exam-window', pageData.exam_id]" >
+          Start Exam
+        </ion-button>
+      </div>
+		</div>
+	</div>
+    
+</ion-content>
+
+<!-- common footer show -->
+<!-- <common-footer></common-footer> -->

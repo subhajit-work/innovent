@@ -1,0 +1,113 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button text="" defaultHref="/"></ion-back-button>
+        </ion-buttons>
+        <ion-title class="text-center">Register</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg-background">
+    <div class="login-form form-wrapper">
+        <div class="login-form-underpart">
+            <div class="text-center">
+                <div class="login-form-box">
+                    <form #userAddForm="ngForm" (ngSubmit)="onSubmit(userAddForm)" (keyup.enter)="onSubmit(userAddForm)">
+                        <div class="top-section">
+                            <div class="logo">
+                                <img alt="logo" src="assets/images/logo.png">
+                            </div>
+                        </div>
+                        <div class="middle-section">
+                            <ion-grid>
+                                <ion-row style="margin-bottom:40px;">
+                                    <input type="hidden" [(ngModel)]="center_id" name="center_id">
+
+                                    <!-- First Name -->
+                                    <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                        <div class="form-item">
+                                            <ion-label >First Name <sup>*</sup></ion-label>
+                                            <ion-input placeholder="Enter your first name" type="text" [(ngModel)]="model.fname" name="fname" required #emailCtrl="ngModel" clearInput required>
+                                                <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                            </ion-input>
+                                        </div>
+                                    </ion-col>
+                                    <!-- Middle Name -->
+                                    <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                        <div class="form-item">
+                                            <ion-label >Middle Name</ion-label>
+                                            <ion-input placeholder="Enter your middle name"  type="text" [(ngModel)]="model.mname" name="mname" #emailCtrl="ngModel" clearInput>
+                                                <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                            </ion-input>
+                                        </div>
+                                    </ion-col>
+                                    <!-- Last Name -->
+                                    <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                        <div class="form-item">
+                                            <ion-label >Last Name <sup>*</sup></ion-label>
+                                            <ion-input placeholder="Enter your last name" type="text" [(ngModel)]="model.lname" name="lname" required #emailCtrl="ngModel" clearInput required>
+                                                <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                            </ion-input>
+                                        </div>
+                                    </ion-col>
+                                    <!-- Mobile -->
+                                    <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                        <div class="form-item">
+                                            <ion-label >Contact Number <sup>*</sup></ion-label>
+                                            <!-- <ion-input placeholder="Please enter 10 digit number" type="tel" OnlyNumber="true" minlength="10" maxlength="10" [(ngModel)]="model.phone" name="phone" required #emailCtrl="ngModel" clearInput required>
+                                                <span class="login-icon"><ion-icon  name="phone-portrait"></ion-icon></span>
+                                            </ion-input> -->
+                                            <ion-input placeholder="Please enter 10 digit number" type="tel" OnlyNumber="true" pattern="[6789]\d{9}$" [(ngModel)]="model.phone" name="phone" required #emailCtrl="ngModel" clearInput required>
+                                                <span class="login-icon"><ion-icon  name="phone-portrait"></ion-icon></span>
+                                            </ion-input>
+                                        </div>
+                                    </ion-col>
+                                    <!-- Email -->
+                                    <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                        <div class="form-item">
+                                            <ion-label >Email <sup>*</sup></ion-label>
+                                            <ion-input placeholder="Enter your email" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" email [(ngModel)]="model.email" name="email" required #emailCtrl="ngModel" clearInput required>
+                                                <span class="login-icon"><ion-icon  name="mail"></ion-icon></span>
+                                            </ion-input>
+                                        </div>
+                                    </ion-col>
+                                    <!-- User Name -->
+                                    <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                        <div class="form-item">
+                                            <ion-label >Username <sup>*</sup></ion-label>
+                                            <ion-input placeholder="Enter your user name" type="text" [(ngModel)]="model.username" name="username" required #emailCtrl="ngModel" clearInput required>
+                                                <span class="login-icon"><ion-icon  name="person"></ion-icon></span>
+                                            </ion-input>
+                                        </div>
+                                    </ion-col>
+                                    <!-- Aspirants For -->
+                                    <ion-col size-xs="12" size-sm="6" offset-sm="3">
+                                        <div class="form-item">
+                                            <ion-label >Aspirants For <sup>*</sup></ion-label>
+                                            <ion-select interface="action-sheet" [(ngModel)]="model.category_id" name="category_id">
+                                                <ion-select-option *ngFor="let item of get_user_dtls.category" [value]="item.id">{{item?.name}}</ion-select-option>
+                                            </ion-select>
+                                        </div>
+                                    </ion-col>
+                                    <ion-col style="margin: 0 15px 0 15px;" matRipple class="forget-password" size-xs="12" size-sm="6" offset-sm="3" [routerLink]="['/auth']">
+                                        <ion-label class="forgot-text">Back to login</ion-label>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col size-xs="12" size-sm="6" offset-sm="3" style="padding: 0px;">
+                                        <ion-button class="submit-btn" type="submit" expand="block" [disabled]="!userAddForm.valid">
+                                            <ion-spinner name="crescent" *ngIf="form_submit_text == 'Please wait'"></ion-spinner>
+                                            <span class="submitText">{{form_submit_text}}</span>
+                                        </ion-button>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</ion-content>
+<ion-footer class="body-footer"></ion-footer>

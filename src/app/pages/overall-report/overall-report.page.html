@@ -1,0 +1,242 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-header class="page-sub-header">
+  <ion-toolbar class="sub-header-bg">
+      <ion-buttons slot="start">
+          <ion-back-button text="" defaultHref="/"></ion-back-button>
+      </ion-buttons>
+      <ion-label>Test Report</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="main-page bg-animated">
+    <div *ngIf="!viewLoadData">
+      <div class="page-underpart">
+        <div class="exam-report-page">
+          <div class="exam-section-part">
+            <div class="section-inner">
+              <div class="exam-section-table">
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Exam</b></div>
+                  <div class="content"><p>{{viewData?.exam}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Class</b></div>
+                  <div class="content"><p>{{viewData?.class}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Subject</b></div>
+                  <div class="content"><p>{{viewData?.subject}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Test Type</b></div>
+                  <div class="content"><p>{{viewData?.test_type}}</p></div>
+                </div>
+
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Name</b></div>
+                  <div class="content"><p>{{viewData?.student_name}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Email ID</b></div>
+                  <div class="content"><p>{{viewData?.student_email}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Aspirant For</b></div>
+                  <div class="content"><p>{{viewData?.student_category}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>School / College / Institute</b></div>
+                  <div class="content"><p>{{viewData?.student_center}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Email ID</b></div>
+                  <div class="content"><p>{{viewData?.center_email}}</p></div>
+                </div>
+              </div>
+            </div>
+            <!-- Summary -->
+            <div class="section-inner">
+              <p class="section-tittle">Summary</p>
+              <div class="exam-section-table">
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Total Questions</b></div>
+                  <div class="content"><p>{{viewData?.total_question}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Full Marks</b></div>
+                  <div class="content"><p>{{viewData?.full_marks}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Correct Response</b></div>
+                  <div class="content"><p>{{viewData?.correct_response}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Marks Obtained</b></div>
+                  <div class="content"><p>{{viewData?.marks_obtained}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Incorrect Response</b></div>
+                  <div class="content"><p>{{viewData?.incorrect_response}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Marks Deducted</b></div>
+                  <div class="content"><p>{{viewData?.marks_deducted}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Unattempted Response</b></div>
+                  <div class="content"><p>{{viewData?.unattempted_response}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Marks Left</b></div>
+                  <div class="content"><p>{{viewData?.marks_left}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Total Time Spent (in Hr:Min:Sec)</b></div>
+                  <div class="content"><p>{{viewData?.total_time_spent_in_seconds}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>	Average Time per Question (in Min:Sec)</b></div>
+                  <div class="content"><p>{{viewData?.avg_time_per_question_in_seconds}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Result of Marks</b></div>
+                  <div class="content"><p>{{viewData?.result_of_marks}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Percentage</b></div>
+                  <div class="content"><p>{{viewData?.percentage}}</p></div>
+                </div>
+              </div>
+            </div>
+            <!-- Speed Accuracy -->
+            <div class="section-inner">
+              <p class="section-tittle">Speed Accuracy</p>
+              <div class="exam-section-table">
+                <div class="exam-table-row">
+                  <div class="tittle"><b class="section-tittle">#</b></div>
+                  <div class="content"><p class="section-tittle">Correct Response</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Average Time (in min:sec)</b></div>
+                  <div class="content"><p>{{viewData?.speed_accuracy?.correct_response?.average}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Best Time (in min:sec)</b></div>
+                  <div class="content"><p>{{viewData?.speed_accuracy?.correct_response?.best}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Worst Time (in min:sec)</b></div>
+                  <div class="content"><p>{{viewData?.speed_accuracy?.correct_response?.worst}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b class="section-tittle">#</b></div>
+                  <div class="content"><p class="section-tittle">Inorrect Response</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Average Time (in min:sec)</b></div>
+                  <div class="content"><p>{{viewData?.speed_accuracy?.incorrect_response?.average}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Best Time (in min:sec)</b></div>
+                  <div class="content"><p>{{viewData?.speed_accuracy?.incorrect_response?.best}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Worst Time (in min:sec)</b></div>
+                  <div class="content"><p>{{viewData?.speed_accuracy?.incorrect_response?.worst}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b class="section-tittle">#</b></div>
+                  <div class="content"><p class="section-tittle">Unattempted Response</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Average Time (in min:sec)</b></div>
+                  <div class="content"><p>{{viewData?.speed_accuracy?.unattempted_response?.average}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Best Time (in min:sec)</b></div>
+                  <div class="content"><p>{{viewData?.speed_accuracy?.unattempted_response?.best}}</p></div>
+                </div>
+                <div class="exam-table-row">
+                  <div class="tittle"><b>Worst Time (in min:sec)</b></div>
+                  <div class="content"><p>{{viewData?.speed_accuracy?.unattempted_response?.worst}}</p></div>
+                </div>
+              </div>
+            </div>
+          
+
+            <div class="pie-chart">
+              <google-chart [data]="pieChart"></google-chart>
+            </div>
+
+            <div class="bar-chart">
+              <google-chart [data]="barChart"></google-chart>
+            </div>
+
+            <div class="scatter-chart">
+              <google-chart [data]="scatterChart"></google-chart>
+
+              <div class="chart-identifire">
+                <div class="identifire-item">
+                  <div>
+                    <img src="assets/icon/correct.png">
+                    -Correct
+                  </div>
+                </div>
+                <div class="identifire-item">
+                  <div>
+                    <img src="assets/icon/incorrect.png">
+                    -Incorrect
+                  </div>
+                </div>
+                <div class="identifire-item">
+                  <div>
+                    <img src="assets/icon/unattempted.png">
+                    -Unattempted
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Weak area -->
+            <div class="section-inner">
+              <p class="section-tittle">Weak Area</p>
+              <p *ngIf="viewData?.weak_area == ''">No data found</p>
+              <ul *ngIf="viewData?.weak_area !== ''">
+                <li *ngFor="let item of viewData?.weak_area; let j = index;">
+                  <p>{{j + 1}}. {{item}}</p>
+                </li>
+              </ul>
+            </div>
+            <!-- Need to Focus Area -->
+            <div class="section-inner">
+              <p class="section-tittle">Need to Focus Area</p>
+              <p *ngIf="viewData?.need_to_focus_area == ''">No data found</p>
+              <ul *ngIf="viewData?.need_to_focus_area !== ''">
+                <li *ngFor="let item of viewData?.need_to_focus_area; let j = index;">
+                  <p>{{j + 1}}. {{item}}</p>
+                </li>
+              </ul>
+            </div>
+
+            <ion-button expand="block" (click)="downloadPdf()" >
+              <ion-icon name="download"></ion-icon>
+              Download Report
+            </ion-button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <!-- Ion spinner -->
+    <div class="spin" *ngIf="viewLoadData">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+	</div>
+    
+</ion-content>
+
+<!-- common footer show -->
+<common-footer></common-footer>

@@ -1,0 +1,150 @@
+<!-- common header show -->
+<common-header></common-header>
+
+<ion-header class="page-sub-header">
+	<ion-toolbar class="sub-header-bg">
+		<ion-buttons slot="start">
+			<ion-back-button text="" defaultHref="/"></ion-back-button>
+		</ion-buttons>
+		<ion-label>Order {{viewData?.result_post?.cms_page_name}}</ion-label>
+		
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="main-page bg-animated">
+		<div *ngIf="!viewLoadData">
+			<div class="page-underpart">
+				<div class="order-status-page">
+					<div class="top-section">
+					<img src="{{file_url}}/uploads/{{viewData?.result_post?.media_file}}">
+					<p innerHTML="{{viewData?.result_post?.sub_title}}"></p>
+					<p innerHTML="{{viewData?.result_post?.description}}"></p>
+					</div>
+					<!-- Contact us details -->
+					<div *ngIf="viewData?.order_details" class="contact-details">
+					<div class="details-item"> 
+						<p class="details-header">
+							Order 
+							<strong>Details</strong>
+						</p>
+						<div class="details-box">
+							<div class="box-item">
+								<div class="icon">
+									<ion-icon name="logo-dropbox"></ion-icon>
+								</div>
+								<div class="title">
+									<strong>Order Id:</strong> {{viewData?.order_details?.id}}
+								</div>
+							</div>
+							<div class="box-item">
+								<div class="icon">
+									<ion-icon name="calendar"></ion-icon>
+								</div>
+								<div class="title">
+									<strong>Order Date:</strong> {{viewData?.order_details?.order_date}}
+								</div>
+							</div>
+							<div class="box-item">
+								<div class="icon">
+									<ion-icon name="alert"></ion-icon>
+								</div>
+								<div class="title">
+									<strong>Expiry Date:</strong> {{viewData?.order_details?.expiry_date}}
+								</div>
+							</div>
+							<div class="box-item">
+								<div class="icon">
+								<ion-icon name="card"></ion-icon>
+								</div>
+								<div class="title">
+									<strong>Payment Id:</strong> {{viewData?.order_details?.payment_id}}
+								</div>
+							</div>
+							<div class="box-item">
+								<div class="icon">
+									<ion-icon name="cash"></ion-icon>
+								</div>
+								<div class="title">
+									<strong>Order Total:</strong> {{viewData?.order_details?.total_price}}
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+
+					<div *ngIf="viewData?.order_details" class="selectedProducts">
+					<table>
+									<thead>
+										<tr>
+											<th>Component</th>
+											<th>Type</th>
+											<th>Amount (Rs.)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Product Cost</td>
+											<td>Credit</td>
+											<td>{{viewData?.order_details?.product_cost}}</td>
+										</tr>
+										<tr>
+											<td>Promo Code Cost</td>
+											<td>Debit</td>
+											<td>{{viewData?.order_details?.promocode_cost}}</td>
+										</tr>
+										<tr>
+											<td>Test Activation Cost</td>
+											<td>Credit</td>
+											<td>{{viewData?.order_details?.test_activation_cost}}</td>
+										</tr>
+										<tr>
+											<td>IGST</td>
+											<td>Credit</td>
+											<td>{{viewData?.order_details?.igst}}</td>
+										</tr>
+										<tr>
+											<td>Round Off</td>
+											<td>Debit</td>
+											<td>{{viewData?.order_details?.round_off_value}}</td>
+										</tr>
+									</tbody>
+								</table>
+					</div>
+
+					<div *ngIf="viewData?.order_details" class="selectedProducts">
+					<table>
+									<thead>
+										<tr>
+											<th>Exam</th>
+											<th>Class</th>
+											<th>Subject</th>
+							<th>Type</th>
+											<th>Amount (Rs.)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngFor="let item of viewData?.order_extension; let i = index;">
+											<td>{{item?.category_name}}</td>
+											<td>{{item?.sub_subcategory_name}}</td>
+											<td>{{item?.subject_name}}</td>
+											<td>{{item?.product_type_name}}</td>
+											<td>{{item?.price}}</td>
+										</tr>
+									</tbody>
+								</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Ion spinner -->
+        <div class="spin" *ngIf="viewLoadData">
+            <ion-spinner name="crescent"></ion-spinner>
+        </div>
+	</div>
+    
+</ion-content>
+
+
+<!-- common footer show -->
+<common-footer></common-footer>
